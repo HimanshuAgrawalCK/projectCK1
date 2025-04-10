@@ -1,14 +1,23 @@
 package com.example.Login.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Entity
-@Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+import java.util.List;
 
-public class User{
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
+@Entity
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Data
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +33,27 @@ public class User{
     private String password;
 
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name = "role_id")
     private Role role;
+
+    @Override
+    public String toString() {
+        return "User " +
+                " name " + name +
+                " email " + email +
+                "password" + password +
+                " role " + role.getRole().name() +
+                " accounts " + awsAccountsList;
+
+    }
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_accounts",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id")
+    )
+    private List<AwsAccounts> awsAccountsList;
 
 }

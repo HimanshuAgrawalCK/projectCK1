@@ -20,21 +20,28 @@ public class UserController
     UserService userService;
 
 
-    @GetMapping
-    public String getCall(){
-        return "This is login Controller";
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id){
+        return ResponseEntity.ok(userService.getUser(id));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("register")
     public ResponseEntity<UserDTO> addUser(@Valid @RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token){
         System.out.println("Hello");
         return ResponseEntity.ok(userService.addUser(userDTO,token));
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_READONLY')")
     @GetMapping("users")
-    public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size){
-        return ResponseEntity.ok(userService.getAllUsers(page,size));
+    public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.getAllUsers(page,size,token));
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
+        return ResponseEntity.ok(userService.updateUser(userDTO,id));
     }
 }

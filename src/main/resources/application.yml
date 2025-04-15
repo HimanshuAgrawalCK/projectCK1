@@ -24,4 +24,4 @@ spring:
 #        org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG
 
 server:
-  port: 8088
+  port: 8080

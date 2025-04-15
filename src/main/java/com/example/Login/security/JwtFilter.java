@@ -1,5 +1,8 @@
 package com.example.Login.security;
 
+import com.example.Login.exceptionhandler.InvalidTokenException;
+import com.example.Login.exceptionhandler.UserNotFoundException;
+import com.example.Login.repository.BlacklistedTokenRepository;
 import com.example.Login.security.jwt.JWTService;
 import com.example.Login.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -34,22 +37,27 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     ApplicationContext context;
 
+    @Autowired
+    BlacklistedTokenRepository blacklistedTokenRepository;
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws InvalidTokenException, ExpiredJwtException, UserNotFoundException, MalformedJwtException, IOException, ServletException {
         // bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIaW1hbnNodWFnYXJ3YWxAZ21haWwuY29tIiwiaWF0IjoxNzQzNzg1NDkxLCJleHAiOjE3NDM3ODU1NTF9.FG1Ez0FdNNCQjAtMDsTHz9-H-ZV9HYPcH02_rbsf3Z4
 
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String email = null;
 
-        try{
-
-
             if (authHeader != null && authHeader.startsWith("Bearer ")){
                 token = authHeader.substring(7);
                 System.out.println("TOKEN : " + token);
                 email = jwtService.extractEmail(token);
                 log.info("Token "+ token + "email " + email);
+            }
+
+            if(token!=null && blacklistedTokenRepository.existsByToken("Bearer " + token)){
+                throw new InvalidTokenException("Please login again!");
             }
 
             if(email!=null && SecurityContextHolder.getContext().getAuthentication()==null){
@@ -63,10 +71,5 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request,response);
-        }catch (ExpiredJwtException | MalformedJwtException | UsernameNotFoundException e) {
-            throw e; // Let GlobalExceptionHandler catch and respond
-        } catch (Exception e) {
-            throw new RuntimeException("Internal error in JWT Filter", e); // Optional wrap
-        }
     }
 }

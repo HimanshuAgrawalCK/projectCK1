@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Set;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -52,8 +53,8 @@ public class User {
     @JoinTable(
             name = "users_accounts",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     )
-    private List<AwsAccounts> awsAccountsList;
+    private Set<AwsAccounts> awsAccountsList;
 
 }

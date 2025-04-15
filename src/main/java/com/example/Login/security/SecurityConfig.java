@@ -57,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("*")); // use this instead of setAllosetAllowedOriginswedOrigins(List.of("*")) for Spring Security 6
+        config.setAllowedOriginPatterns(List.of("http://localhost:3000")); // use this instead of setAllosetAllowedOriginswedOrigins(List.of("*")) for Spring Security 6
         config.setAllowedMethods(List.of("*"));        // Allow all HTTP methods
         config.setAllowedHeaders(List.of("*"));        // Allow all headers
         config.setAllowCredentials(true);              // Optional: allow credentials like cookies or Authorization header
@@ -70,11 +70,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .exceptionHandling(ex->
-//                        ex.accessDeniedHandler(accessDeniedHandler))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
@@ -92,6 +89,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-
 }

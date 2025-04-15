@@ -16,20 +16,16 @@ public class AwsController {
     AwsService awsService;
 
 
-    @PreAuthorize("has")
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<?> addAwsAccount(@RequestBody AwsDTO awsDTO){
         return ResponseEntity.ok(awsService.addAwsAccount(awsDTO));
     }
 
-    @PatchMapping
-    public void updateOrphanAccount(@RequestBody AwsDTO awsDTO, @RequestParam Boolean isOrphan){
-        awsService.updateOrphanAccount(awsDTO,isOrphan);
-    }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getAllAccounts(){
-        return ResponseEntity.ok(awsService.getAccountSummary());
+    public ResponseEntity<?> getAllAccounts(@RequestParam(required = false) Long id){
+        return ResponseEntity.ok(awsService.getAccountSummary(id));
     }
 }

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Set;
+
 @Data
 @ToString
 public class UserDTO {
@@ -21,4 +23,6 @@ public class UserDTO {
     private String password;
 
     private ERole role;
+
+    private Set<Long> accounts ;
 }

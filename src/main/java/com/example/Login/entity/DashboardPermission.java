@@ -15,8 +15,9 @@ public class DashboardPermission
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String dashboards;
 
-    private EDashboard dashboards;
+    private String path;
 
 
 

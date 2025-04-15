@@ -2,7 +2,9 @@ package com.example.Login.exceptionhandler;
 
 
 import com.example.Login.dto.ExceptionResponse;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.ExpressionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,7 +16,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class GlobalExceptionHandler
 {
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<?> invalidToken(ExpiredJwtException ex){
+        log.warn("INVALID TOKEN");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> wrongPassword(RuntimeException ex){
         log.warn("WRONG PASSWORD");
@@ -22,14 +30,12 @@ public class GlobalExceptionHandler
                 body(new ExceptionResponse("Wrong password exception",401));
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserAlreadyExists.class)
     public ResponseEntity<?> userExists(RuntimeException ex){
         log.warn("User already exists");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(WrongRoleException.class)
     public  ResponseEntity<?> wrongRole(RuntimeException ex){
         log.warn("Only Admin can add users");
@@ -37,30 +43,24 @@ public class GlobalExceptionHandler
 
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<?> expiredToken(RuntimeException ex){
+    public ResponseEntity<?> expiredToken(ExpiredJwtException ex){
         log.warn("THE TOKEN IS EXPIRED");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(MalformedJwtException.class)
-    public ResponseEntity<ExceptionResponse> malformedException(RuntimeException ex){
+    public ResponseEntity<?> malformedException(RuntimeException ex){
         log.warn("THE token is malfunctioning");
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body
-                (new ExceptionResponse
-                        (ex.getMessage(), 403));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> usernameNotFound(RuntimeException ex){
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> usernameNotFound(RuntimeException ex){
         log.warn("User Does not exists");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionResponse(ex.getMessage(),401));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeException(RuntimeException ex){
         log.warn("Unexpected error : {}",ex.getMessage());
@@ -72,5 +72,8 @@ public class GlobalExceptionHandler
         log.warn("SAME ARN ALREADY EXISTS");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+
+
 
 }

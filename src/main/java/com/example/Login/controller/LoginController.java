@@ -21,7 +21,7 @@ public class LoginController
     @Autowired
     UserService userService;
 
-    @PreAuthorize("hasAnyAuthority('ADMIN','CUSTOMER','READRONLY')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_READONLY')")
     @PostMapping("/logout")
     public void logout(@RequestHeader("Authorization") String token){
         System.out.println(token);
@@ -31,9 +31,10 @@ public class LoginController
     }
 
 
-    @PostMapping("login")
+
+    @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
-        return ResponseEntity.ok(userService.UserAuth(loginRequestDTO));
+        return ResponseEntity.ok(userService.userAuth(loginRequestDTO));
     }
 
 }

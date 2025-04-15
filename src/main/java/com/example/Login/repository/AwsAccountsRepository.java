@@ -13,11 +13,11 @@ public interface AwsAccountsRepository extends JpaRepository<AwsAccounts, Long> 
 
     Optional<AwsAccounts> findByArn(String arn);
 
-    @Query(value = "SELECT aws.id AS id," +
-            " aws.accountId AS accountId," +
-            "aws.accountName AS accountName," +
-            "aws.isOrphan AS isOrphan" +
+    @Query(value = "SELECT aws.accountId AS accountId," +
+            "aws.accountName AS accountName" +
             "  FROM AwsAccounts aws")
     List<AccountSummary> getAccountSummary();
+
+    Optional<AwsAccounts> findByAccountId(Long id);
 
 }

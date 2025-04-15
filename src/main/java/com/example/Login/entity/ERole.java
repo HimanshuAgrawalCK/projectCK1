@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ERole
 {
     ADMIN,
-    READRONLY,
+    READONLY,
     CUSTOMER;
 
     @JsonCreator

@@ -1,0 +1,81 @@
+/* EditUser.css */
+
+.edit-user-container {
+    margin-left: 250px; /* accommodate sidebar */
+    padding: 2rem;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .edit-user-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .edit-user-form {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+  }
+  
+  .edit-user-form label {
+    display: block;
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    color: #555;
+  }
+  
+  .edit-user-form input,
+  .edit-user-form select {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .edit-user-form input:focus,
+  .edit-user-form select:focus {
+    border-color: #007bff;
+  }
+  
+  .edit-user-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .edit-user-buttons button {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .save-button {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .save-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .cancel-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #c0392b;
+  }
+  

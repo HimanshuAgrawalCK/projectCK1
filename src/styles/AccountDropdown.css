@@ -1,0 +1,88 @@
+/* Container around the dropdown */
+.dropdown-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Dropdown toggle button */
+  .dropdown-toggle {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  /* Dropdown box */
+  .dropdown-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+  
+  .lists-container {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .account-list {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 8px;
+  }
+  
+  .account-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+    gap: 8px;
+  }
+  
+  .arrow-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .arrow-buttons button {
+    font-size: 18px;
+    padding: 6px 12px;
+    border: none;
+    background-color: #eee;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .arrow-buttons button:hover {
+    background-color: #ddd;
+  }
+  

@@ -1,0 +1,254 @@
+.userDashboard {
+  display: flex;
+  margin-top: 60px;
+}
+
+.userDashboard-content {
+  margin-left: 200px;
+  padding: 20px;
+  width: calc(100% - 200px);
+}
+
+.userDashboard-content h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+
+.add-user-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.add-user-button:hover {
+  background-color: #0069d9;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.user-table th {
+  background-color: #f5f7f9;
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+}
+
+.user-table th:first-child {
+  border-top-left-radius: 4px;
+}
+
+.user-table th:last-child {
+  border-top-right-radius: 4px;
+}
+
+.user-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #333;
+}
+
+.user-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pagination-buttons button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pagination-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-buttons button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination-buttons span {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Filters and action buttons */
+.filters-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.filter-button:hover {
+  background-color: #f9f9f9;
+}
+
+.filter-icon {
+  color: #777;
+  font-size: 16px;
+}
+
+.active-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.count-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Action buttons exactly as in screenshot */
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #007bff;
+  border-radius: 50%;
+}
+
+.action-edit {
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Role badge styling */
+.role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #e6f0ff;
+  color: #007bff;
+}
+
+.role-badge.read-only {
+  background-color: #f7e6ff;
+  color: #8e44ad;
+}
+
+.role-badge.admin {
+  background-color: #e6fff0;
+  color: #27ae60;
+}
+
+/* Header module links dropdown */
+.module-links {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.module-links-dropdown {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* User profile in header */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #0062cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sort-icon {
+  font-size: 12px;
+  color: #777;
+}
+
+.edit-button{
+  background: url("../../public/images/edit.png");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  border: none;
+  
+}

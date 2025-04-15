@@ -1,0 +1,50 @@
+.add-user-form-container {
+    margin: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 400px;
+    background-color: #f9f9f9;
+  }
+  
+  .add-user-form h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .add-user-form label {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  
+  .add-user-form input,
+  .add-user-form select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+  }
+  
+  .add-user-form button {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-user-form button:hover {
+    background-color: #45a049;
+  }
+  
+
+  .back-button {
+    margin-left: 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  

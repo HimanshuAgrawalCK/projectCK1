@@ -6,9 +6,9 @@ export const showToast = (message, statusCode) => {
   if (statusCode >= 200 && statusCode < 300) {
     toast.success(message);
   } else if (statusCode >= 400 && statusCode < 500) {
-    toast.warn(message+"\t"+statusCode);
+    toast.warn(message+"\t");
   } else if (statusCode >= 500) {
-    toast.error(message+"\t"+statusCode);
+    toast.error(message);
   } else {
     toast.info(message);
   }

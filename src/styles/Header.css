@@ -13,8 +13,13 @@
   z-index: 100;
 }
 
+.header-left .header-right .header-middle{
+  height: 100%;
+  width: 100%;
+}
+
 .header-left img {
-  height: 32px;
+  width: 15%;
 }
 
 .header-middle span {
@@ -23,6 +28,7 @@
 }
 
 .header-right {
+  justify-content: end;
   display: flex;
   align-items: center;
   gap: 16px;

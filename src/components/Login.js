@@ -25,6 +25,7 @@ function Login() {
       localStorage.setItem("userData", JSON.stringify(userData));
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
+      localStorage.setItem("isLoggedIn", true);
       dispatch(loginSuccess(data.token,data.role,userData))
 
       if (data?.role === "CUSTOMER") {
@@ -45,7 +46,7 @@ function Login() {
     <div className="login-wrapper">
       <div className="login-box">
         <div className="login-logo">
-          <img src="/images/cloudbalancelogo.png" alt="CloudKeeper" />
+          <img src="/images/image.png" alt="CloudKeeper" />
         </div>
         <form className="login-form" onSubmit={handleLogin}>
           <label htmlFor="email">Email</label>

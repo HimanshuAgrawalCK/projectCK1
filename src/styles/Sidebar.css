@@ -27,10 +27,14 @@
 .nav-link:hover {
   background-color: rgba(0, 123, 255, 0.05);
 }
-
+/* 
 .nav-link.active {
   background-color: rgba(0, 123, 255, 0.1);
   border-left: 3px solid #007bff;
   color: #007bff;
   font-weight: 500;
+} */
+.nav-link.active {
+  font-weight: bold;
+  color: #007bff;
 }

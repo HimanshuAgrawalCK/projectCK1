@@ -1,160 +1,101 @@
 import axios from "axios";
 import store from "../redux/store";
+import { showToast } from "../components/common/Toaster";
+
 const URL = `http://localhost:8080`;
 const API_URL = `${URL}/api/auth`;
 
 export const authAxios = axios.create();
+let isTokenExpired = false;
 
 authAxios.interceptors.request.use(
   (config) => {
-    const token = store.getState().token;
+    const token = store.getState().user.token;
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error("Error in request: ", error);
+    showToast("Error in request");
+    return Promise.reject(error);
+  }
 );
 
 authAxios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !isTokenExpired
+    ) {
+      isTokenExpired = true;
+      showToast("Session expired. Please log in again", 401);
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
     }
     return Promise.reject(error);
   }
 );
 
+// Login
 export const loginUser = async (email, password) => {
-  try {
-    const response = await axios.post(`${URL}/cloudbalance/login`, {
-      email,
-      password,
-    });
-    console.log("I was here");
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await axios.post(`${URL}/cloudbalance/login`, {
+    email,
+    password,
+  });
+  return response.data;
 };
 
-export const validateToken = async (token) => {
-  try {
-    const response = await authAxios.get(`${API_URL}/validate`);
-    return response.data;
-  } catch (error) {
-    throw new Error("Invalid token");
-  }
-};
-
-//GEtting all user details
+// Get user details
 export const getUserDetails = async (userId) => {
-  try {
-    const token = store.getState().token;
-    const response = await authAxios.get(`${API_URL}/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user details: ", error);
-  }
-  // console.log("Response from get user details: ", response.data);
+  const response = await authAxios.get(`${API_URL}/${userId}`);
+  return response.data;
 };
 
+// Fetch users
 export const fetchUsers = async (page, size) => {
-  try {
-    const token = localStorage.getItem("token");
-    console.log("TOken is : ", token);
-    const response = await authAxios.get(
-      `${API_URL}/users?page=${page}&size=${size}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}}`,
-        },
-      }
-    );
-    console.log("Response from fetch users: ", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching users: ", error);
-  }
+  const response = await authAxios.get(
+    `${API_URL}/users?page=${page}&size=${size}`
+  );
+  return response.data;
 };
 
+// Fetch roles
 export const fetchRoles = async () => {
-  try {
-    const token = store.getState().token;
-    const response = await authAxios.get(`${URL}/roles`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log("Response from fetch roles: ", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching roles: ", error);
-  }
+  const response = await authAxios.get(`${URL}/roles`);
+  return response.data;
 };
 
+// Create user
 export const createUser = async (userData) => {
-  try {
-    const token = localStorage.getItem("token");
-    console.log("Token is : ", token);
-    const response = await authAxios.post(`${API_URL}/register`, userData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error creating user: ", error);
-    throw error;
-  }
+  const response = await authAxios.post(`${API_URL}/register`, userData);
+  return response.data;
 };
 
-export const getAllAccounts = async (id=0) => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await authAxios.get(`${URL}/aws?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log("Response from get all accounts: ", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching accounts: ", error);
-    throw error;
-  }
+// Get accounts
+export const getAllAccounts = async (id = 0) => {
+  const response = await authAxios.get(`${URL}/aws?id=${id}`);
+  return response.data;
 };
 
+// Logout
 export const logOut = async () => {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await authAxios.post(`${URL}/cloudbalance/logout`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
+  const response = await authAxios.post(`${URL}/cloudbalance/logout`);
+  return response;
 };
 
-
+// Update user
 export const updateUser = async (userId, userData) => {
-  try{
-    const response = await authAxios.patch(`${API_URL}/${userId}`, userData,{
-      headers: {
-        Authorization: `Bearer ${store.getState().token}`
-    }});
-    return response.data;
-  } catch(error){
-    console.error("Error updating user: ", error);
-    throw error;
-  }
+  const response = await authAxios.patch(`${API_URL}/${userId}`, userData);
+  return response.data;
+};
+
+// Add account
+export const addAccount = async (accountData) => {
+  const response = await authAxios.post(`${URL}/aws`, accountData);
+  return response.data;
 };

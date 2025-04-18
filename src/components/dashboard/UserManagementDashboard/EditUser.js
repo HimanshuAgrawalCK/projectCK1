@@ -21,7 +21,6 @@ export default function EditUser({ userId = 0, onBack }) {
 
   const [roles, setRoles] = useState([]);
   const [listing, setListing] = useState([]);
-  //   const [initialListing, setInitialListing] = useState([]);
   const [assigned, setAssigned] = useState([]);
   const [unassigned, setUnassigned] = useState([]);
   const [accountsLoaded, setAccountsLoaded] = useState(false);
@@ -46,10 +45,7 @@ export default function EditUser({ userId = 0, onBack }) {
           setUnassigned(unassignedAccounts);
           setListing(unassignedAccounts);
         } else {
-            // const unassignedIds = ];
             setUnassigned(allAccounts);
-
-            // setListing(user.accounts); // <-- for others
         }
 
         setFormData({
@@ -60,7 +56,6 @@ export default function EditUser({ userId = 0, onBack }) {
         });
 
         setRoles(allRoles);
-        // setListing(user.accounts); // initially assigned accounts for dropdown
       } catch (error) {
         console.error("Error fetching user details", error);
       }

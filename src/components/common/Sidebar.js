@@ -4,8 +4,8 @@ import "../../styles/Sidebar.css";
 import { useSelector } from "react-redux";
 
 export default function Sidebar() {
-    const role = useSelector((state)=>state.role)
-    return (
+  const role = useSelector((state) => state.user.role);
+  return (
     <div className="sidebar">
       <nav className="sidebar-links">
         {/* Admin-only routes */}
@@ -13,33 +13,36 @@ export default function Sidebar() {
           <>
             <NavLink
               to="/usermanagementdashboard"
-              className="nav-link"
-              activeclassname="active">
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }>
               User Management
             </NavLink>
-        </>
+          </>
         )}
-        {role==="ADMIN" && (
-
-            <NavLink
+        {role === "ADMIN" && (
+          <NavLink
             to="/onboardingdashboard"
-            className="nav-link"
-            activeclassname="active">
-              Onboarding
-            </NavLink>
-            )}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }>
+            Onboarding
+          </NavLink>
+        )}
 
         {/* Common routes */}
         <NavLink
           to="/costexplorerdashboard"
-          className="nav-link"
-          activeclassname="active">
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }>
           Cost Explorer
         </NavLink>
         <NavLink
           to="/awsservicesdashboard"
-          className="nav-link"
-          activeclassname="active">
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }>
           AWS Services
         </NavLink>
       </nav>

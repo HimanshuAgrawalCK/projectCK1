@@ -6,26 +6,49 @@ import UserManagementDashboard from "./components/dashboard/UserManagementDashbo
 import OnboardingDashboard from "./components/dashboard/OnboardingDashboard/OnboardingDashboard";
 import AwsServicesDashboard from "./components/dashboard/AwsServicesDashboard/AwsServicesDashboard";
 import CostExplorer from "./components/dashboard/CostExplorerDashboard/CostExplorer";
+import PrivateRoute from "./components/PrivateRoute";
+import Unauthorized from "./components/UnauthorizedAccess";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<Login />} />
           <Route
             path="/usermanagementdashboard"
-            element={<UserManagementDashboard />}
+            element={
+              <PrivateRoute allowedRoles={["ADMIN", "READONLY"]}>
+                <UserManagementDashboard />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/onboardingdashboard"
-            element={<OnboardingDashboard />}
+            element={
+              <PrivateRoute allowedRoles={["ADMIN"]}>
+                <OnboardingDashboard />
+              </PrivateRoute>
+            }
           />
           <Route
             path="/awsservicesdashboard"
-            element={<AwsServicesDashboard />}
+            element={
+              <PrivateRoute allowedRoles={["ADMIN", "CUSTOMER", "READONLY"]}>
+                <AwsServicesDashboard />
+              </PrivateRoute>
+            }
           />
-          <Route path="/costexplorerdashboard" element={<CostExplorer />} />
+          <Route
+            path="/costexplorerdashboard"
+            element={
+              <PrivateRoute allowedRoles={["ADMIN", "CUSTOMER", "READONLY"]}>
+                <CostExplorer />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="*" element={<h1>404 Page Not Found</h1>} />
         </Routes>
       </BrowserRouter>
       <ToastWrapper />

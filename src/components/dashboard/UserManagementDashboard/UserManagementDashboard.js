@@ -6,6 +6,8 @@ import { fetchUsers } from "../../../api/Api";
 import AddNewUser from "./AddNewUser";
 import EditUser from "./EditUser";
 import { useSelector } from "react-redux";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function UserManagementDashboard() {
   const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ export default function UserManagementDashboard() {
   const [addUser, setAddUser] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
 
-  const userDetails = useSelector((state) => state);
+  const userDetails = useSelector((state) => state.user);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -47,7 +49,9 @@ export default function UserManagementDashboard() {
   let contentToRender;
 
   if (editUserId) {
-    contentToRender = <EditUser userId={editUserId} onBack={handleBackFromEdit} />;
+    contentToRender = (
+      <EditUser userId={editUserId} onBack={handleBackFromEdit} />
+    );
   } else if (addUser) {
     contentToRender = <AddNewUser onBack={handleBackFromAdd} />;
   } else {
@@ -58,8 +62,7 @@ export default function UserManagementDashboard() {
           {userDetails?.role === "ADMIN" && (
             <button
               className="add-user-button"
-              onClick={() => setAddUser(true)}
-            >
+              onClick={() => setAddUser(true)}>
               Add User +
             </button>
           )}
@@ -70,6 +73,7 @@ export default function UserManagementDashboard() {
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Last Login Timee</th>
                 <th>Role</th>
                 <th>Actions</th>
               </tr>
@@ -80,12 +84,14 @@ export default function UserManagementDashboard() {
                   <td>{user.id}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
+                  <td>{user.lastLoginTime}</td>
                   <td>{user.roleName}</td>
                   <td>
-                    <button
-                      className="edit-button"
+                    <IconButton
                       onClick={() => handleEditButton(user.id)}
-                    />
+                      aria-label="edit">
+                      <EditIcon color="primary" />
+                    </IconButton>
                   </td>
                 </tr>
               ))}
@@ -96,8 +102,7 @@ export default function UserManagementDashboard() {
         <div className="pagination-buttons">
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
-            disabled={page === 0}
-          >
+            disabled={page === 0}>
             Previous
           </button>
 
@@ -109,8 +114,7 @@ export default function UserManagementDashboard() {
             onClick={() =>
               setPage((prev) => Math.min(prev + 1, totalPages - 1))
             }
-            disabled={page >= totalPages - 1}
-          >
+            disabled={page >= totalPages - 1}>
             Next
           </button>
         </div>
@@ -123,9 +127,7 @@ export default function UserManagementDashboard() {
       <Header />
       <div className="userDashboard">
         <Sidebar />
-        <div className="userDashboard-content">
-          {contentToRender}
-        </div>
+        <div className="userDashboard-content">{contentToRender}</div>
       </div>
     </>
   );

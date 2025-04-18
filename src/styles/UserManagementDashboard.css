@@ -245,10 +245,14 @@
 }
 
 .edit-button{
-  background: url("../../public/images/edit.png");
   background-size: cover;
   width: 20px;
   height: 20px;
   border: none;
   
+}
+
+.user-table tbody tr:hover {
+  background-color: #f1f5ff; /* Light blue hover for better visibility */
+  cursor: pointer;
 }

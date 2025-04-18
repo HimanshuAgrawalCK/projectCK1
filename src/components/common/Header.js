@@ -9,13 +9,13 @@ import { logout } from "../../redux/Action";
 
 export default function Header() {
     const dispatch = useDispatch();
-    const {name} = useSelector((state)=> state.userDetails) || {};
+    const {name} = useSelector((state)=> state.user.userDetails) || {};
   const logoutButton = async () => {
     try{
         const res = await logOut();
         dispatch(logout());
         // sessionStorage.removeItem("user");
-        navigate("/");
+        // navigate("/login");
     }
     catch(error){
         showToast(error);
@@ -26,10 +26,9 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-left">
-        <img src="images/cloudbalance.png" alt="CloudBalance" />
+        <img src="images/cloudbalancelogo.png" alt="CloudBalance" />
       </div>
       <div className="header-middle">
-        <span>User Management Dashboard</span>
       </div>
       <div className="header-right">
         <span>{name}</span>

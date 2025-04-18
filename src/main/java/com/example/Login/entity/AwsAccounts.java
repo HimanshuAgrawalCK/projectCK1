@@ -17,7 +17,5 @@ public class AwsAccounts
 
     private String accountName;
 
-    private String roleName;
-
     private String arn;
 }

@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +38,7 @@ public class JWTService {
                 .add(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60*15 ))
                 .and()
                 .signWith(key)
                 .compact();
@@ -77,9 +75,4 @@ public class JWTService {
     public Date extractExpiration(String token){
         return extractClaim(token,Claims::getExpiration);
     }
-
-//    private Key getKey(){
-//        byte[] keyBytes = Decoders.BASE64.decode(key);
-//        return Keys.hmacShaKeyFor(keyBytes);
-//    }
 }

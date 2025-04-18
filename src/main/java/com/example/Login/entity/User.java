@@ -1,6 +1,7 @@
 package com.example.Login.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +38,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss") // <- Set format here
+    private LocalDateTime lastLoginTime;
 
     @Override
     public String toString() {

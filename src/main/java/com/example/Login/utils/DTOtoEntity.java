@@ -37,7 +37,6 @@ public class DTOtoEntity {
         AwsAccounts awsAccounts = new AwsAccounts();
         awsAccounts.setAccountName(awsDTO.getAccountName());
         awsAccounts.setArn(awsDTO.getArn());
-        awsAccounts.setRoleName(awsDTO.getRoleName());
         awsAccounts.setAccountId(awsDTO.getAccountId());
         return awsAccounts;
     }

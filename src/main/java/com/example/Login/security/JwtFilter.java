@@ -45,31 +45,43 @@ public class JwtFilter extends OncePerRequestFilter {
             throws InvalidTokenException, ExpiredJwtException, UserNotFoundException, MalformedJwtException, IOException, ServletException {
         // bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIaW1hbnNodWFnYXJ3YWxAZ21haWwuY29tIiwiaWF0IjoxNzQzNzg1NDkxLCJleHAiOjE3NDM3ODU1NTF9.FG1Ez0FdNNCQjAtMDsTHz9-H-ZV9HYPcH02_rbsf3Z4
 
-        String authHeader = request.getHeader("Authorization");
-        String token = null;
-        String email = null;
 
-            if (authHeader != null && authHeader.startsWith("Bearer ")){
+        try{
+            String authHeader = request.getHeader("Authorization");
+            String token = null;
+            String email = null;
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
-                System.out.println("TOKEN : " + token);
+                log.info("TOKENSS : " + token);
                 email = jwtService.extractEmail(token);
-                log.info("Token "+ token + "email " + email);
+                log.info("Token " + token + "email " + email);
             }
 
-            if(token!=null && blacklistedTokenRepository.existsByToken("Bearer " + token)){
+            if (token != null && blacklistedTokenRepository.existsByToken("Bearer " + token)) {
                 throw new InvalidTokenException("Please login again!");
             }
 
-            if(email!=null && SecurityContextHolder.getContext().getAuthentication()==null){
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = context.getBean(UserDetailsServiceImpl.class).loadUserByUsername(email);
-                if(jwtService.validateToken(token, userDetails)){
+                if (jwtService.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    System.out.println(authToken);
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    log.info("In Do filter ", authToken);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
+        }catch (ExpiredJwtException | MalformedJwtException | UsernameNotFoundException |
+                InvalidTokenException ex) {
+
+            log.error("JWT Error: {}", ex.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":401,\"error\":\"" + ex.getMessage() + "\"}");
+        } catch (Exception e) {
+            log.error("Error occured", e.getClass());
+        }
     }
 }

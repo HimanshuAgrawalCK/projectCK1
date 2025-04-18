@@ -27,7 +27,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<ExceptionResponse> wrongPassword(RuntimeException ex){
         log.warn("WRONG PASSWORD");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
-                body(new ExceptionResponse("Wrong password exception",401));
+                body(new ExceptionResponse("Bad Credentials",401));
     }
 
     @ExceptionHandler(UserAlreadyExists.class)
@@ -64,12 +64,19 @@ public class GlobalExceptionHandler
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeException(RuntimeException ex){
         log.warn("Unexpected error : {}",ex.getMessage());
-        return ResponseEntity.internalServerError().body("An unexpected error occured");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Runtime exception");
+
     }
 
     @ExceptionHandler(AwsArnAlreadyExists.class)
     public ResponseEntity<?> arnAlreadyExists(RuntimeException ex){
         log.warn("SAME ARN ALREADY EXISTS");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AccountAlreadyExists.class)
+    public ResponseEntity<?> accountAlreadyExists(RuntimeException ex){
+        log.warn(ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

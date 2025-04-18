@@ -8,5 +8,4 @@ public class AwsDTO {
     private Long accountId;
     private String accountName;
     private String arn;
-    private String roleName;
 }

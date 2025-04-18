@@ -4,24 +4,20 @@ package com.example.Login.service;
 import com.example.Login.dto.AccountSummary;
 import com.example.Login.dto.AwsDTO;
 import com.example.Login.entity.AwsAccounts;
-import com.example.Login.entity.ERole;
 import com.example.Login.entity.User;
+import com.example.Login.exceptionhandler.AccountAlreadyExists;
 import com.example.Login.exceptionhandler.AwsArnAlreadyExists;
 import com.example.Login.repository.AwsAccountsRepository;
 import com.example.Login.repository.UserRepository;
 import com.example.Login.utils.DTOtoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
+import com.example.Login.service.serviceInterfaces.AccountsInterface;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AwsService {
+public class AccountsService implements AccountsInterface {
 
     @Autowired
     DTOtoEntity dtOtoEntity;
@@ -34,6 +30,9 @@ public class AwsService {
 
 
     public AwsDTO addAwsAccount(AwsDTO awsDTO) {
+        if(awsAccountsRepository.existsById(awsDTO.getAccountId())){
+            throw new AccountAlreadyExists("Account Already Exists");
+        }
         if(awsAccountsRepository.existsByArn(awsDTO.getArn())){
             throw new AwsArnAlreadyExists("ARN has to be unique");
         }

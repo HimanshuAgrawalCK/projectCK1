@@ -25,15 +25,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.Login.service.serviceInterfaces.UserInterface;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements UserInterface {
 
     @Autowired
     private DTOtoEntity dtOtoEntity;
@@ -57,18 +59,21 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AwsService awsService;
+    private AccountsService accountsService;
 
     @Autowired
     AuthenticationManager authenticationManager;
 
-
-    public JwtResponse userAuth(LoginRequestDTO loginRequestDTO) throws WrongPasswordException {
+    public JwtResponse login(LoginRequestDTO loginRequestDTO) throws WrongPasswordException {
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken
                         (loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
 
-        User user = userRepository.findByEmail(loginRequestDTO.getEmail()).get();
+        User user = userRepository.findByEmail(loginRequestDTO.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User Does not exists"));
+        user.setLastLoginTime(LocalDateTime.now());
+        userRepository.save(user);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         if (authentication.isAuthenticated()) {
@@ -80,7 +85,7 @@ public class UserService {
                     user.getId(),
                     user.getEmail(),
                     user.getRole().getRole().name(),
-                    val, awsService.getAccountSummary(user.getId()));
+                    val, accountsService.getAccountSummary(user.getId()), user.getLastLoginTime());
         }
         throw new BadCredentialsException("Bad Credentials");
     }
@@ -151,25 +156,25 @@ public class UserService {
                 (ERole.ADMIN.equals(user.getRole().getRole()) || ERole.READONLY.equals(user.getRole().getRole()))) {
             Set<AwsAccounts> awsAccounts = userDTO.getAccounts()
                     .stream()
-                    .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(()->
+                    .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(() ->
                             new RuntimeException("No Accounts Exists : " + accountId)))
                     .collect(Collectors.toSet());
             user.setAwsAccountsList(awsAccounts);
         }
-        if(ERole.CUSTOMER.equals(userDTO.getRole()) && ERole.CUSTOMER.equals(user.getRole().getRole())){
+        if (ERole.CUSTOMER.equals(userDTO.getRole()) && ERole.CUSTOMER.equals(user.getRole().getRole())) {
             Set<AwsAccounts> awsAccounts = userDTO.getAccounts()
                     .stream()
-                    .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(()->
+                    .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(() ->
                             new RuntimeException("No Accounts Exists : " + accountId)))
                     .collect(Collectors.toSet());
             user.setAwsAccountsList(awsAccounts);
         }
-        if (userDTO.getRole()!=null &&
-        user.getRole()!=null &&
-        user.getRole().getRole()!=null &&
-        !userDTO.getRole().equals(user.getRole().getRole())) {
+        if (userDTO.getRole() != null &&
+                user.getRole() != null &&
+                user.getRole().getRole() != null &&
+                !userDTO.getRole().equals(user.getRole().getRole())) {
             Role newRole = roleRepository.
-                    findByRole(userDTO.getRole()).orElseThrow(()-> new WrongRoleException("ROle Does not exists"));
+                    findByRole(userDTO.getRole()).orElseThrow(() -> new WrongRoleException("ROle Does not exists"));
             user.setRole(newRole);
         }
         userRepository.save(user);

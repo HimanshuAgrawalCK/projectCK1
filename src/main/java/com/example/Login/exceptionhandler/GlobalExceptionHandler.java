@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import software.amazon.awssdk.core.exception.SdkException;
 
 @ControllerAdvice
 @Slf4j
@@ -79,6 +80,20 @@ public class GlobalExceptionHandler
         log.warn(ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(AccountDoesNotExists.class)
+    public ResponseEntity<?> accountDoesNotExists(RuntimeException ex){
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AwsServiceException.class)
+    public ResponseEntity<String> handleAwsServiceError(AwsServiceException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+
+
 
 
 

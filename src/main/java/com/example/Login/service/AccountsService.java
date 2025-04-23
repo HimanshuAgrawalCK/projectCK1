@@ -50,7 +50,7 @@ public class AccountsService implements AccountsInterface {
             return awsAccountsRepository.getAccountSummary();
         }
 //        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("No user exists"));
         if(user.getRole().getRole().name().equals("CUSTOMER")){
             List<AccountSummary> accountSummaries = user.getAwsAccountsList().stream()
                     .map(awsAccounts -> new AccountSummary() {

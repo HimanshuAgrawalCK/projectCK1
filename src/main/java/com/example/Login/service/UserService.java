@@ -141,10 +141,7 @@ public class UserService implements UserInterface {
     public UserDTO updateUser(UserDTO userDTO, Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User Does Not exist"));
-
-        if (!userDTO.getName().equals(user.getName())) {
-            user.setName(userDTO.getName());
-        }
+        user.setName(userDTO.getName());
 
 
         if ((ERole.ADMIN.equals(userDTO.getRole()) || ERole.READONLY.equals(userDTO.getRole()))
@@ -152,31 +149,24 @@ public class UserService implements UserInterface {
             user.setAwsAccountsList(null);
         }
 
-        if (ERole.CUSTOMER.equals(userDTO.getRole()) &&
-                (ERole.ADMIN.equals(user.getRole().getRole()) || ERole.READONLY.equals(user.getRole().getRole()))) {
-            Set<AwsAccounts> awsAccounts = userDTO.getAccounts()
-                    .stream()
-                    .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(() ->
-                            new RuntimeException("No Accounts Exists : " + accountId)))
-                    .collect(Collectors.toSet());
-            user.setAwsAccountsList(awsAccounts);
+
+        else{
+
+            if(userDTO.getAccounts()==null || userDTO.getAccounts().isEmpty()){
+                user.setAwsAccountsList(null);
+            }
+            else{
+                Set<AwsAccounts> awsAccounts = userDTO.getAccounts()
+                        .stream()
+                        .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(() ->
+                                new RuntimeException("No Accounts Exists : " + accountId)))
+                        .collect(Collectors.toSet());
+                user.setAwsAccountsList(awsAccounts);
+            }
         }
-        if (ERole.CUSTOMER.equals(userDTO.getRole()) && ERole.CUSTOMER.equals(user.getRole().getRole())) {
-            Set<AwsAccounts> awsAccounts = userDTO.getAccounts()
-                    .stream()
-                    .map(accountId -> awsAccountsRepository.findByAccountId(accountId).orElseThrow(() ->
-                            new RuntimeException("No Accounts Exists : " + accountId)))
-                    .collect(Collectors.toSet());
-            user.setAwsAccountsList(awsAccounts);
-        }
-        if (userDTO.getRole() != null &&
-                user.getRole() != null &&
-                user.getRole().getRole() != null &&
-                !userDTO.getRole().equals(user.getRole().getRole())) {
-            Role newRole = roleRepository.
-                    findByRole(userDTO.getRole()).orElseThrow(() -> new WrongRoleException("ROle Does not exists"));
-            user.setRole(newRole);
-        }
+        Role role = roleRepository.findByRole(userDTO.getRole())
+                .orElseThrow(()-> new WrongRoleException("Role Does Not Exists"));
+        user.setRole(role);
         userRepository.save(user);
         return dtOtoEntity.map(user);
     }

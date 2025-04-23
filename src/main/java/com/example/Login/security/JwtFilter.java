@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,7 +74,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request, response);
-        }catch (ExpiredJwtException | MalformedJwtException | UsernameNotFoundException |
+        }catch (AuthorizationDeniedException e){
+            log.error("Permission Denied");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":403,\"error\":\"" + e.getMessage() + "\"}");
+        }
+        catch (ExpiredJwtException | MalformedJwtException | UsernameNotFoundException |
                 InvalidTokenException ex) {
 
             log.error("JWT Error: {}", ex.getMessage());

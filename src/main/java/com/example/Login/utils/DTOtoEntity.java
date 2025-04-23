@@ -41,17 +41,26 @@ public class DTOtoEntity {
         return awsAccounts;
     }
 
-    public UserDTO map(User user){
+    public UserDTO map(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
         userDTO.setRole(user.getRole().getRole());
-        userDTO.setAccounts(user.getAwsAccountsList()
-                .stream()
-                .map(accounts-> accounts.getAccountId())
-                .collect(Collectors.toSet()));
-        return  userDTO;
+
+        Set<Long> accounts = user.getAwsAccountsList() != null ?
+                user.getAwsAccountsList()
+                        .stream()
+                        .map(AwsAccounts::getAccountId)
+                        .collect(Collectors.toSet()) : null;
+
+        userDTO.setAccounts(accounts);
+        // SET account in DTO
+//        userDTO.setAccounts(user.getAwsAccountsList()
+//                .stream()
+//                .map(accounts -> accounts.getAccountId())
+//                .collect(Collectors.toSet()));
+        return userDTO;
     }
 
 

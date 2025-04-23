@@ -23,7 +23,6 @@ export default function EditUser({ userId = 0, onBack }) {
   const [listing, setListing] = useState([]);
   const [assigned, setAssigned] = useState([]);
   const [unassigned, setUnassigned] = useState([]);
-  const [accountsLoaded, setAccountsLoaded] = useState(false);
 
 
   useEffect(() => {
@@ -38,14 +37,17 @@ export default function EditUser({ userId = 0, onBack }) {
           setAssigned(response);
 
           const assignedIds = new Set(response.map((a) => a.accountId));
-
+          console.log("assignedIds", assignedIds);
           const unassignedAccounts = allAccounts.filter(
             (acc) => !assignedIds.has(acc.accountId)
           );
+          console.log("unassignedAccounts", unassignedAccounts);
           setUnassigned(unassignedAccounts);
-          setListing(unassignedAccounts);
+          setListing(assigned);
         } else {
             setUnassigned(allAccounts);
+            setAssigned([]);
+            setListing([]);
         }
 
         setFormData({
@@ -79,6 +81,8 @@ export default function EditUser({ userId = 0, onBack }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("Form data before submission: ", formData);
+      console.log("Listing before submission: ", listing);
       const finalData = {
         ...formData,
         accounts: Array.from(listing).map((acc) => acc.accountId),

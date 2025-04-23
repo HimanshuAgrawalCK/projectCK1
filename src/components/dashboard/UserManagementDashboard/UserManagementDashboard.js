@@ -8,6 +8,16 @@ import EditUser from "./EditUser";
 import { useSelector } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+} from "@mui/material";
 
 export default function UserManagementDashboard() {
   const [loading, setLoading] = useState(true);
@@ -67,36 +77,38 @@ export default function UserManagementDashboard() {
             </button>
           )}
 
-          <table className="user-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Last Login Timee</th>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.lastLoginTime}</td>
-                  <td>{user.roleName}</td>
-                  <td>
-                    <IconButton
-                      onClick={() => handleEditButton(user.id)}
-                      aria-label="edit">
-                      <EditIcon color="primary" />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TableContainer component={Paper} className="user-table">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Last Login Time</TableCell>
+                  <TableCell>Role</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user.id} hover>
+                    <TableCell>{user.id}</TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.lastLoginTime}</TableCell>
+                    <TableCell>{user.roleName}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => handleEditButton(user.id)}
+                        aria-label="edit">
+                        <EditIcon color="primary" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
 
         <div className="pagination-buttons">

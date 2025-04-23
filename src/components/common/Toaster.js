@@ -15,4 +15,4 @@ export const showToast = (message, statusCode) => {
 };
 
 // ToastContainer wrapper (used once globally, typically in App.js)
-export const ToastWrapper = () => <ToastContainer position="top-right" autoClose={3000} />;
+export const ToastWrapper = () => <ToastContainer position="top-right" autoClose={1000} />;

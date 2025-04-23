@@ -4,8 +4,8 @@ import { getAllAccounts } from "../../api/Api";
 
 export default function AccountDropdown({ setListing, assigned = null, unassigned = null }) {
   const initialized = useRef(false);
-  const [assignedAccounts, setAssignedAccounts] = useState(new Set());
-  const [unassignedAccounts, setUnassignedAccounts] = useState(new Set());
+  const [assignedAccounts, setAssignedAccounts] = useState([]);
+  const [unassignedAccounts, setUnassignedAccounts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -15,20 +15,14 @@ export default function AccountDropdown({ setListing, assigned = null, unassigne
     const initAccounts = async () => {
       try {
         if (assigned && unassigned) {
-          // Coming from EditUser, accounts are already separated
-          const assignedSet = new Set(assigned);
-          const unassignedSet = new Set(unassigned);
-
-          setAssignedAccounts(assignedSet);
-          setUnassignedAccounts(unassignedSet);
-          setListing(Array.from(assignedSet));
+          // Coming from EditUser
+          setAssignedAccounts(assigned);
+          setUnassignedAccounts(unassigned);
+          setListing(assigned);
         } else {
-          // Coming from AddNewUser, fetch all accounts
+          // Coming from AddNewUser
           const allAccounts = await getAllAccounts(0);
-          const unassignedSet = new Set(allAccounts);
-
-          setAssignedAccounts(new Set());
-          setUnassignedAccounts(unassignedSet);
+          setUnassignedAccounts(allAccounts);
         }
 
         initialized.current = true;
@@ -40,48 +34,30 @@ export default function AccountDropdown({ setListing, assigned = null, unassigne
     initAccounts();
   }, [assigned, unassigned, setListing]);
 
-
+  useEffect(() => {
+    setListing(assignedAccounts);
+  }, [assignedAccounts, setListing]);
   
 
   const handleAssign = (acc) => {
-    setUnassignedAccounts((prev) => {
-      const updated = new Set(prev);
-      updated.delete(acc);
-      return updated;
-    });
+    const updatedAssigned = [...assignedAccounts, acc];
+    const updatedUnassigned = unassignedAccounts.filter((a) => a.accountId !== acc.accountId);
 
-    setAssignedAccounts((prev) => {
-      const updated = new Set(prev);
-      updated.add(acc);
-      return updated;
-    });
-
-    setListing((prev) => {
-      const updated = new Set(prev);
-      updated.add(acc);
-      return Array.from(updated);
-    });
+    setAssignedAccounts(updatedAssigned);
+    setUnassignedAccounts(updatedUnassigned);
+    setListing(updatedAssigned);
   };
 
   const handleUnassign = (acc) => {
-    setAssignedAccounts((prev) => {
-      const updated = new Set(prev);
-      updated.delete(acc);
-      return updated;
-    });
+    const updatedAssigned = assignedAccounts.filter((a) => a.accountId !== acc.accountId);
+    const updatedUnassigned = [...unassignedAccounts, acc];
 
-    setUnassignedAccounts((prev) => {
-      const updated = new Set(prev);
-      updated.add(acc);
-      return updated;
-    });
-
-    setListing((prev) =>
-      Array.from(prev).filter((item) => item.accountId !== acc.accountId)
-    );
+    setAssignedAccounts(updatedAssigned);
+    setUnassignedAccounts(updatedUnassigned);
+    setListing(updatedAssigned);
   };
 
-  const filteredUnassigned = Array.from(unassignedAccounts).filter((acc) =>
+  const filteredUnassigned = unassignedAccounts.filter((acc) =>
     acc.accountName?.toLowerCase().startsWith(searchText.toLowerCase())
   );
 
@@ -123,7 +99,7 @@ export default function AccountDropdown({ setListing, assigned = null, unassigne
             </div>
             <div className="account-list">
               <div className="list-header">Assigned</div>
-              {Array.from(assignedAccounts).map((acc) => (
+              {assignedAccounts.map((acc) => (
                 <div key={acc.accountId} className="account-item">
                   <input type="checkbox" checked={true} onChange={() => handleUnassign(acc)} />
                   <span>

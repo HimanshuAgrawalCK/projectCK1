@@ -26,10 +26,7 @@ export default function AddNewUser({ onBack }) {
       try {
         const res = await fetchRoles();
         setRoles(res);
-        // setAccountData(response);
         console.log("Roles fetched successfully", res);
-        // console.log(accountData);
-        // console.log("Accounts fetched successfully", response);
       } catch (err) {
         console.error("Error fetching roles", err);
       }
@@ -48,7 +45,6 @@ export default function AddNewUser({ onBack }) {
     setFormData(obj);
   };
   const handleSubmit = async (e) => {
-    // e.preventDefault();
     try {
       const accountIdSet = new Set(
         Array.from(listing).map((acc) => acc.accountId)
@@ -74,8 +70,6 @@ export default function AddNewUser({ onBack }) {
       showToast(err?.response?.data, err?.response?.status);
       alert("Error creating user");
     }
-
-    // console.log("Form submitted:", formData);
   };
 
   return (

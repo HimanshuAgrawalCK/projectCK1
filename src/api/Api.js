@@ -37,6 +37,9 @@ authAxios.interceptors.response.use(
         window.location.href = "/login";
       }, 1500);
     }
+    if(error.response && error.response.status === 400){
+      showToast(error.response.data, 400);
+    }
     return Promise.reject(error);
   }
 );
@@ -99,3 +102,18 @@ export const addAccount = async (accountData) => {
   const response = await authAxios.post(`${URL}/aws`, accountData);
   return response.data;
 };
+
+export const ec2Instance = async (accountId) => {
+  const response = await authAxios.get(`${URL}/aws/ec2instances?accountId=${accountId}`);
+  return response.data;
+}
+
+export const rdsInstance = async (accountId) => {
+  const response = await authAxios.get(`${URL}/aws/rdsinstances?accountId=${accountId}`);
+  return response.data;
+}
+
+export const asgInstance = async (accountId) => {
+  const response = await authAxios.get(`${URL}/aws/asginstances?accountId=${accountId}`);
+  return response.data;
+}

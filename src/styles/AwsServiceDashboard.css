@@ -1,0 +1,27 @@
+.aws_services_dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: calc(100% - 200px);
+  margin-left: 15px;
+  padding: 10px;
+}
+
+.aws_services_title{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.option-box{
+  background-color: white;
+  border-radius: 8px;
+}
+
+
+.active-button {
+  background-color: #1976d2 !important;  /* MUI primary blue */
+  color: white !important;
+  border-color: #1976d2 !important;
+}
+

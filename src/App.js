@@ -8,6 +8,7 @@ import AwsServicesDashboard from "./components/dashboard/AwsServicesDashboard/Aw
 import CostExplorer from "./components/dashboard/CostExplorerDashboard/CostExplorer";
 import PrivateRoute from "./components/PrivateRoute";
 import Unauthorized from "./components/UnauthorizedAccess";
+import AwsResourceTable from "./components/dashboard/AwsServicesDashboard/AwsResourceTable";
 
 function App() {
   return (
@@ -36,8 +37,10 @@ function App() {
               <PrivateRoute allowedRoles={["ADMIN", "CUSTOMER", "READONLY"]}>
                 <AwsServicesDashboard />
               </PrivateRoute>
-            }
-          />
+            }>
+            <Route path=":serviceType" element={<AwsResourceTable />} />
+          </Route>
+
           <Route
             path="/costexplorerdashboard"
             element={
@@ -46,6 +49,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<h1>404 Page Not Found</h1>} />

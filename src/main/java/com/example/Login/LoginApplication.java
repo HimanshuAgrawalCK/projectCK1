@@ -17,10 +17,6 @@ public class LoginApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LoginApplication.class, args);
 
-
-//		BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials("AKIAQZFTAVPYAG7WXK5S","NWQ2arqLax3O4f4uMDKIr2z9UzoD4zXjKaJMTXur");
-//		final AmazonEC2 ec2 = AmazonEC2ClientBuilder.standard().build();
-////		List<?> ec2_instance =
 	}
 
 

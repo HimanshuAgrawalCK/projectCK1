@@ -39,7 +39,8 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss") // <- Set format here
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
 
     @Override

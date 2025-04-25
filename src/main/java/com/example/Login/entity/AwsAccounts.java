@@ -15,6 +15,7 @@ public class AwsAccounts
     @Id
     private Long accountId;
 
+    @Column(name="account_name")
     private String accountName;
 
     private String arn;

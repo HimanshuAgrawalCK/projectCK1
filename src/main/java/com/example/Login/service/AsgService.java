@@ -54,7 +54,7 @@ public class AsgService implements AwsService
                 details.setMaxSize(group.maxSize());
                 details.setRegion(asgClient.serviceClientConfiguration().region().toString());
                 details.setResourceId(group.autoScalingGroupARN());
-                details.setStatus(group.status());
+                details.setStatus(group.status()==null ? "N/A" : group.status());
                 awsAsgInstanceDetailsList.add(details);
             }
 

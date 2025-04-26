@@ -117,3 +117,13 @@ export const asgInstance = async (accountId) => {
   const response = await authAxios.get(`${URL}/aws/asginstances?accountId=${accountId}`);
   return response.data;
 }
+
+export const getAllColumns = async() =>{
+  const response = await authAxios.get(`${URL}/snowflake/getAllColumns`);
+  return response.data;
+}
+
+export const getChartDataWithGroupAndFilters = async(requestData) =>{
+  const response = await authAxios.post(`${URL}/snowflake/getSumByGroupAndFilter`,requestData);
+  return response.data;
+}

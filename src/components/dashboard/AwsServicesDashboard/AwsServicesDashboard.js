@@ -12,6 +12,7 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import "../../../styles/AwsServiceDashboard.css";
+import AccountSelectBox from "../../common/AccountSelectBox";
 
 function VariantButtonGroup({ onServiceSelect, selectedService }) {
   return (
@@ -114,23 +115,11 @@ export default function AwsServicesDashboard() {
         <div className="aws_services_dashboard">
           <div className="aws_services_title">
             <h3>Scheduler</h3>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="account-label">Account</InputLabel>
-                <Select
-                  labelId="account-label"
-                  value={selectedAccount}
-                  label="Account"
-                  onChange={handleChange}
-                >
-                  {accounts.map((acc) => (
-                    <MenuItem value={acc.accountId} key={acc.accountId}>
-                      {acc.accountName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
+            <AccountSelectBox
+              accounts={accounts}
+              selectedAccount={selectedAccount}
+              handleChange={handleChange}
+            />
           </div>
 
           <VariantButtonGroup

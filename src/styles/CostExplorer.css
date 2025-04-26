@@ -1,0 +1,56 @@
+.cost_explorer_content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: white;
+    border: 1px solid grey;
+    border-radius: 5px;
+    overflow: hidden; /* important to prevent gaps */
+}
+
+.group_by_section {
+    width: 100%;
+    margin: 0; /* remove any external margin */
+}
+
+.fusionchart_container {
+    display: flex;
+    width: 100%;
+    height: 600px; /* You can adjust this based on your requirement */
+}
+
+.fusionchart_chart {
+    flex: 7;
+    padding: 20px;
+    overflow-y: auto; /* enables scroll if chart and content height exceeds */
+}
+
+.fusionchart_filters {
+    flex: 3;
+    background-color: #f9f9f9;
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+    height: 100%; /* so that it stretches fully */
+}
+
+.fusionchart_filters h3 {
+    margin-bottom: 15px;
+}
+
+.fusionchart_filters ul {
+    list-style: none;
+    padding: 0;
+}
+
+.fusionchart_filters li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.fusionchart_additional_content {
+    margin-top: 40px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+}

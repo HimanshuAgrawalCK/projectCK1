@@ -5,6 +5,7 @@ import { showToast } from "../components/common/Toaster";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/Action";
+import Page404 from "./common/Page404";
 
 function Login() {
   const navigate = useNavigate();
@@ -44,10 +45,8 @@ function Login() {
 
   return (
     <div className="login-wrapper">
+          <img src="/images/cloudbalancelogo (2).png" alt="CloudKeeper" style={{width:"40%"}}/>
       <div className="login-box">
-        <div className="login-logo">
-          <img src="/images/image.png" alt="CloudKeeper" />
-        </div>
         <form className="login-form" onSubmit={handleLogin}>
           <label htmlFor="email">Email</label>
           <input
@@ -68,10 +67,6 @@ function Login() {
             placeholder="Enter your password"
             required
           />
-
-          <div className="forgot-password">
-            <a href="/forgot-password">Forgot Password?</a>
-          </div>
 
           <button type="submit" className="login-button">
             LOGIN

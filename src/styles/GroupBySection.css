@@ -1,0 +1,38 @@
+.group_by_section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  background-color: #e0e0e0;
+  border-bottom: 1px solid gray;
+}
+
+.group_by_column {
+    
+  transition: transform 0.3s ease;
+}
+
+
+.active_column {
+    transform: scale(1.05);
+    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+  }
+
+.moreButton {
+  background-color: white;
+  color: black;
+}
+
+.group_by_column:active {
+  color: blue;
+}
+
+.not_active_column{
+    background-color: white;
+    color: #1976d2;
+    font-weight: 500;
+}
+
+

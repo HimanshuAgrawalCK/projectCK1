@@ -9,6 +9,7 @@ import CostExplorer from "./components/dashboard/CostExplorerDashboard/CostExplo
 import PrivateRoute from "./components/PrivateRoute";
 import Unauthorized from "./components/UnauthorizedAccess";
 import AwsResourceTable from "./components/dashboard/AwsServicesDashboard/AwsResourceTable";
+import Page404 from "./components/common/Page404";
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="*" element={<h1>404 Page Not Found</h1>} />
+          <Route path="*" element={<Page404/>} />
         </Routes>
       </BrowserRouter>
       <ToastWrapper />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import tableConfigs from "./tableConfig";
 import ContentCopy from "@mui/icons-material/ContentCopy";
 import "../../../styles/AwsResourceTable.css";
@@ -79,6 +79,8 @@ const AwsResourceTable = () => {
       {loading ? (
         <div className="loading-spinner">Loading...</div>
       ) : (
+        <div>
+          <h3>{serviceType.toUpperCase()} Resources</h3>
         <div className="table-wrapper">
           <table className="aws-table">
             <thead>
@@ -92,7 +94,7 @@ const AwsResourceTable = () => {
                         onClick={() =>
                           setOpenFilter(openFilter === col.key ? null : col.key)
                         }>
-                        <FilterAltIcon sx={{color:"white"}}/>
+                        <FilterAltOutlinedIcon sx={{color:"white"}}/>
                       </span>
 
                       {openFilter === col.key && (
@@ -107,7 +109,7 @@ const AwsResourceTable = () => {
                                 [col.key]: e.target.value,
                               }))
                             }
-                          />
+                            />
                           <div className="filter-list">
                             <div
                               className={`filter-item ${
@@ -124,17 +126,17 @@ const AwsResourceTable = () => {
                             </div>
                             {getFilteredValues(col.key).map((val) => (
                               <div
-                                key={val}
-                                className={`filter-item ${
-                                  columnFilters[col.key] === val
-                                    ? "selected"
-                                    : ""
-                                }`}
-                                onClick={() => {
-                                  setColumnFilters((prev) => ({
+                              key={val}
+                              className={`filter-item ${
+                                columnFilters[col.key] === val
+                                ? "selected"
+                                : ""
+                              }`}
+                              onClick={() => {
+                                setColumnFilters((prev) => ({
                                     ...prev,
                                     [col.key]:
-                                      prev[col.key] === val ? null : val, // toggle
+                                    prev[col.key] === val ? null : val, // toggle
                                   }));
                                   setOpenFilter(null); // close popup
                                 }}>
@@ -186,6 +188,7 @@ const AwsResourceTable = () => {
             </tbody>
           </table>
         </div>
+                </div>
       )}
     </div>
   );

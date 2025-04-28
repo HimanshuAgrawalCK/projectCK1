@@ -26,7 +26,7 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-left">
-        <img src="images/cloudbalancelogo.png" alt="CloudBalance" />
+        <img src="images/cloudbalancelogo (2) (3).png" alt="CloudBalance" style={{width:"15vh"}}/>
       </div>
       <div className="header-middle">
       </div>

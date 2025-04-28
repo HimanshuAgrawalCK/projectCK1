@@ -32,7 +32,7 @@ export default function UserManagementDashboard() {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await fetchUsers(page, 8);
+        const res = await fetchUsers(page, 10);
         setUsers(res?.content);
         setTotalPages(res?.totalPages);
       } catch (error) {
@@ -86,7 +86,9 @@ export default function UserManagementDashboard() {
                   <TableCell>Email</TableCell>
                   <TableCell>Last Login Time</TableCell>
                   <TableCell>Role</TableCell>
+                  {userDetails.role==="ADMIN" && 
                   <TableCell>Actions</TableCell>
+                  }
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -97,13 +99,15 @@ export default function UserManagementDashboard() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.lastLoginTime}</TableCell>
                     <TableCell>{user.roleName}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        onClick={() => handleEditButton(user.id)}
-                        aria-label="edit">
-                        <EditIcon color="primary" />
-                      </IconButton>
-                    </TableCell>
+                    {userDetails.role === "ADMIN" && (
+                      <TableCell>
+                        <IconButton
+                          onClick={() => handleEditButton(user.id)}
+                          aria-label="edit">
+                          <EditIcon color="primary" />
+                        </IconButton>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>

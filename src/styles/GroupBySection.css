@@ -1,24 +1,23 @@
 .group_by_section {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+  padding: 5px;
   font-weight: bold;
-  margin-bottom: 1rem;
   flex-wrap: wrap;
-  background-color: #e0e0e0;
-  border-bottom: 1px solid gray;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #f8f8f8;
 }
 
 .group_by_column {
-    
   transition: transform 0.3s ease;
 }
 
-
 .active_column {
-    transform: scale(1.05);
-    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
-  }
+  transform: scale(1.05);
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+}
 
 .moreButton {
   background-color: white;
@@ -29,10 +28,39 @@
   color: blue;
 }
 
-.not_active_column{
-    background-color: white;
-    color: #1976d2;
-    font-weight: 500;
+.not_active_column {
+  background-color: white;
+  color: #1976d2;
+  font-weight: 500;
 }
 
+.group_by_fields {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.toggle_filter_btn {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #093ca2; /* Default color */
+}
+
+.toggle_filter_btn:hover {
+  background-color: #e3e3e3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.toggle_filter_btn:active {
+  background-color: #d1d1d1;
+  color: #093ca2; /* Stay or change to #093ca2 on active */
+  transform: scale(0.95);
+}
 

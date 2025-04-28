@@ -1,56 +1,168 @@
-.cost_explorer_content {
+.cost_explorer_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+    width: 80%; 
+    box-sizing: border-box; 
+
+}
+.cost_explorer_header{
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: white;
-    border: 1px solid grey;
-    border-radius: 5px;
-    overflow: hidden; /* important to prevent gaps */
 }
 
-.group_by_section {
-    width: 100%;
-    margin: 0; /* remove any external margin */
-}
-
-.fusionchart_container {
+.header_titleAndAccount{
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  
+.cost_explorer_content{
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: white;
+
+}
+.group_by_columns{
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+}
+
+.group_by{
     width: 100%;
-    height: 600px; /* You can adjust this based on your requirement */
 }
 
-.fusionchart_chart {
-    flex: 7;
-    padding: 20px;
-    overflow-y: auto; /* enables scroll if chart and content height exceeds */
+.fusionchart_container{
+    display: flex;
+    gap: 1%;
+    padding-left: 10px;
 }
 
-.fusionchart_filters {
-    flex: 3;
-    background-color: #f9f9f9;
-    border-left: 1px solid #ddd;
-    padding: 20px;
-    overflow-y: auto;
-    height: 100%; /* so that it stretches fully */
+.fusionchart_wrapper{
+    width: 70%;
 }
 
-.fusionchart_filters h3 {
-    margin-bottom: 15px;
+.filter_sidebar {
+    width: 29%;}
+
+
+.fusionchart_wrapper_header{
+    display: flex;
+    justify-content: space-between;
+    padding: 2px;
 }
 
-.fusionchart_filters ul {
-    list-style: none;
-    padding: 0;
+.date_picker{
+    display: flex;
+    gap: 5px;
+    /* width: 70%; */
 }
 
-.fusionchart_filters li {
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
+.wrapper_header_form{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+    align-items: center;
 }
 
-.fusionchart_additional_content {
-    margin-top: 40px;
-    background-color: #f1f1f1;
-    padding: 20px;
-    border-radius: 8px;
+.chart_type{
+    display: flex;
+    gap: 5px;
+}
+
+.chart_type_toggle {
+    display: flex;
+    gap: 5px;
+}
+
+.chart_type_toggle button {
+    background-color: white;
+    border: 1px solid transparent;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 20px;
+    color: grey;
+}
+
+.chart_type_toggle button:hover {
+    background-color: #f0f0f0;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.chart_type_toggle button.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+
+.fusionchart_main{
+    border: 1px solid #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.additonal_content1{
+    border-radius: 5px;
+    padding: 10px 0px ;
+    display: flex;
+    color: #537acd;
+    width: 100%;
+    background-color: #dbe6f8;
+    justify-content: center;
+    align-items: center;
+}
+
+.table_section {
+    margin-top: 20px;
+  }
+  
+  .table_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table_wrapper {
+    overflow-x: auto;
+    margin-top: 10px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f0f0f0;
+  }
+  
+
+.fusionchart_wrapper_without_filter{
+    width: 100%;
+}
+
+.excel_button{
+    background-color: #24B468;
+    border-radius: 10px;
+    border: none;
 }

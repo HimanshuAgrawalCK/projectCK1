@@ -8,6 +8,7 @@ import Page3 from "./Page3";
 import { showToast } from "../../common/Toaster";
 import { addAccount } from "../../../api/Api";
 import DonePage from "./DonePage";
+import WelcomeCard from "./WelcomeCard"; // Import the new WelcomeCard component
 
 export default function OnboardingDashboard() {
   const [page, setPage] = useState(0); // starting from Page1
@@ -26,6 +27,11 @@ export default function OnboardingDashboard() {
       arn: "",
     });
     setIsWelcome(!isWelcome);
+    setPage(0);
+  };
+
+  const handleStartOnboarding = () => {
+    setIsWelcome(false);
     setPage(0);
   };
 
@@ -51,17 +57,17 @@ export default function OnboardingDashboard() {
     setPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
 
-  const handleSubmit = async() => {
-    try{
+  const handleSubmit = async () => {
+    try {
       const response = await addAccount(formData);
       setDone(true);
-      showToast("Account added successfully",200);
+      showToast("Account added successfully", 200);
       setFormData({
         accountId: "",
         accountName: "",
         arn: "",
       });
-    } catch(error){
+    } catch (error) {
       showToast(error.response.data);
       handleRestart();
     }
@@ -77,7 +83,6 @@ export default function OnboardingDashboard() {
       arn: "",
     });
   };
-  
 
   const pages = {
     0: (
@@ -86,8 +91,6 @@ export default function OnboardingDashboard() {
     1: <Page2 setPage={setPage} />,
     2: <Page3 formData={formData} />,
   };
-
-  
 
   return (
     <div className="dashboard_wrapper">
@@ -98,19 +101,14 @@ export default function OnboardingDashboard() {
         <div className="sidebar_wrapper">
           <Sidebar />
         </div>
-  
-        <div className="onboarding_dashboard_content">
-          {done && <DonePage handleRestart={handleRestart}/>}
-  
+
+        <div className={!done ? "onboarding_dashboard_content" : "onboarding_done"}>
+          {done && <DonePage handleRestart={handleRestart} />}
+
           {!done && isWelcome && (
-            <>
-              <h1>Welcome</h1>
-              <button type="button" onClick={handleCancel}>
-                Start Onboarding
-              </button>
-            </>
+            <WelcomeCard handleStartOnboarding={handleStartOnboarding} />
           )}
-  
+
           {!done && !isWelcome && (
             <>
               {pages[page]}
@@ -155,5 +153,4 @@ export default function OnboardingDashboard() {
       </div>
     </div>
   );
-  
 }

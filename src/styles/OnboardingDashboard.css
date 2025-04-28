@@ -17,6 +17,7 @@
 .main_container {
   display: flex;
   flex: 1;
+  /* margin-top: 3%; */
   background-color: #f5f7fa;
 }
 
@@ -201,10 +202,16 @@
     color: #ffffff;
 }
 
+.onboarding_done{
+  height: calc(100vh - 200px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .done-page{
   text-align: center;
-  padding: 20px;
-  background-color: white;
 }
 

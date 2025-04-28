@@ -120,10 +120,18 @@ export const asgInstance = async (accountId) => {
 
 export const getAllColumns = async() =>{
   const response = await authAxios.get(`${URL}/snowflake/getAllColumns`);
+  console.log("Column List", response);
   return response.data;
 }
 
 export const getChartDataWithGroupAndFilters = async(requestData) =>{
   const response = await authAxios.post(`${URL}/snowflake/getSumByGroupAndFilter`,requestData);
+  return response.data;
+}
+
+export const getDistinctValues = async(columnName) =>{
+  const response = await authAxios.get(`${URL}/snowflake/getDistinctValuesByColumn`,{
+    params: { columnName: columnName }
+  });
   return response.data;
 }

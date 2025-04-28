@@ -17,7 +17,10 @@ public class SqlQueryGenerator {
 
         // Group by column
         CostExplorerColumns groupByColumn = CostExplorerColumns.fromDisplayName(costExplorerDto.getGroupByName());
-        query.append(groupByColumn.getDbColumnName()).append(", ");
+        query.append(groupByColumn.getDbColumnName()).append(" AS \"")
+                .append(groupByColumn.getDisplayName())
+                .append("\", ")
+        ;
 
         // Add month-year column for grouping
         query.append("TO_CHAR(USAGESTARTDATE, 'MM-YYYY') AS USAGE_MONTH, ");
@@ -34,7 +37,9 @@ public class SqlQueryGenerator {
                 String value = (String) filter.get("value");
 
                 String column = CostExplorerColumns.fromDisplayName(columnName).getDbColumnName();
+
                 query.append(column).append(" = '").append(value).append("'");
+
                 if (i < filters.size() - 1) {
                     query.append(" AND ");
                 }
@@ -50,6 +55,9 @@ public class SqlQueryGenerator {
                     .append("AND TO_TIMESTAMP('")
                     .append(costExplorerDto.getEndYear()).append("-").append(costExplorerDto.getEndMonth()).append("-01')");
         }
+
+        query.append("AND LINKEDACCOUNTID = ").append(costExplorerDto.getAccountId()).append(" ");
+
         query.append(" GROUP BY ").append(groupByColumn.getDbColumnName()).append(", TO_CHAR(USAGESTARTDATE, 'MM-YYYY')");
         query.append(" ORDER BY TOTAL_AMOUNT DESC");
         query.append(" LIMIT 1000");

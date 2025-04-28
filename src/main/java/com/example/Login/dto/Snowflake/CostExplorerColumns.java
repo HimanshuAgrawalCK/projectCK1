@@ -5,33 +5,35 @@ import lombok.Getter;
 @Getter
 public enum CostExplorerColumns {
 
-    LINKED_ACCOUNT_ID("Linked Account ID", "LINKEDACCOUNTID"),
-    START_DAY("Start Day", "MYCLOUD_STARTDAY"),
-    START_MONTH("Start Month", "MYCLOUD_STARTMONTH"),
-    START_YEAR("Start Year", "MYCLOUD_STARTYEAR"),
-    OPERATION("Operation", "LINEITEM_OPERATION"),
-    USAGE_TYPE("Usage Type", "LINEITEM_USAGETYPE"),
-    INSTANCE_TYPE("Instance Type", "MYCLOUD_INSTANCETYPE"),
-    OPERATING_SYSTEM("Operating System", "MYCLOUD_OPERATINGSYSTEM"),
-    PRICING_TYPE("Pricing Type", "MYCLOUD_PRICINGTYPE"),
-    REGION_NAME("Region Name", "MYCLOUD_REGIONNAME"),
-    USAGE_START_DATE("Usage Start Date", "USAGESTARTDATE"),
-    DATABASE_ENGINE("Database Engine", "PRODUCT_DATABASEENGINE"),
-    PRODUCT_NAME("Product Name", "PRODUCT_PRODUCTNAME"),
-    UNBLENDED_COST("Unblended Cost", "LINEITEM_UNBLENDEDCOST"),
-    USAGE_AMOUNT("Usage Amount", "LINEITEM_USAGEAMOUNT"),
-    GROUP_TYPE("Group Type", "MYCLOUD_COST_EXPLORER_USAGE_GROUP_TYPE"),
-    UNIT("Pricing Unit", "PRICING_UNIT"),
-    CHARGE_TYPE("Charge Type", "CHARGE_TYPE"),
-    AVAILABILITY_ZONE("Availability Zone", "AVAILABILITYZONE"),
-    TENANCY("Tenancy", "TENANCY");
+    PRODUCT_NAME("Product Name", "PRODUCT_PRODUCTNAME",true),
+    LINKED_ACCOUNT_ID("Linked Account ID", "LINKEDACCOUNTID",false),
+    START_DAY("Start Day", "MYCLOUD_STARTDAY",false),
+    START_MONTH("Start Month", "MYCLOUD_STARTMONTH",false),
+    START_YEAR("Start Year", "MYCLOUD_STARTYEAR",false),
+    OPERATION("Operation", "LINEITEM_OPERATION",true),
+    USAGE_TYPE("Usage Type", "LINEITEM_USAGETYPE",true),
+    INSTANCE_TYPE("Instance Type", "MYCLOUD_INSTANCETYPE",true),
+    OPERATING_SYSTEM("Operating System", "MYCLOUD_OPERATINGSYSTEM",true),
+    PRICING_TYPE("Pricing Type", "MYCLOUD_PRICINGTYPE",true),
+    REGION_NAME("Region Name", "MYCLOUD_REGIONNAME",true),
+    USAGE_START_DATE("Usage Start Date", "USAGESTARTDATE",false),
+    DATABASE_ENGINE("Database Engine", "PRODUCT_DATABASEENGINE",true),
+    UNBLENDED_COST("Unblended Cost", "LINEITEM_UNBLENDEDCOST",false),
+    USAGE_AMOUNT("Usage Amount", "LINEITEM_USAGEAMOUNT",false),
+    GROUP_TYPE("Group Type", "MYCLOUD_COST_EXPLORER_USAGE_GROUP_TYPE",true),
+    UNIT("Pricing Unit", "PRICING_UNIT",false),
+    CHARGE_TYPE("Charge Type", "CHARGE_TYPE",true),
+    AVAILABILITY_ZONE("Availability Zone", "AVAILABILITYZONE",true),
+    TENANCY("Tenancy", "TENANCY",true);
 
     private final String displayName;
     private final String dbColumnName;
+    private final boolean display;
 
-    CostExplorerColumns(String displayName, String dbColumnName) {
+    CostExplorerColumns(String displayName, String dbColumnName, boolean display) {
         this.displayName = displayName;
         this.dbColumnName = dbColumnName;
+        this.display = display;
     }
 
     public String getDisplayName() {
@@ -40,6 +42,10 @@ public enum CostExplorerColumns {
 
     public String getDbColumnName() {
         return dbColumnName;
+    }
+
+    public boolean getDisplay(){
+        return display;
     }
 
     public static CostExplorerColumns fromDisplayName(String displayName) {

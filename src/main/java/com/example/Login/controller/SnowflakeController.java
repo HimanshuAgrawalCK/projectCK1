@@ -10,6 +10,7 @@ import com.example.Login.service.serviceInterfaces.SnowflakeService;
 import com.example.Login.utils.SqlQueryGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class SnowflakeController {
         return ResponseEntity.ok(snowflakeService.getAllColumns());
     }
 
+//    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_READONLY','ROLE_CUSTOMER)")
     @GetMapping("/getDistinctValuesByColumn")
     public ResponseEntity<List<String>> getAllDistinctValues(@RequestParam String columnName){
         return ResponseEntity.ok(snowflakeService.getAllDistinctValues(columnName));

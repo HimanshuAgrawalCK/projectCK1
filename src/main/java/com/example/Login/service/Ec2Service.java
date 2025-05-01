@@ -1,14 +1,16 @@
 package com.example.Login.service;
 
 import com.example.Login.aws.AwsClientFactory;
-import com.example.Login.aws.AwsConfig;
 import com.example.Login.dto.AwsEc2InstanceDetails;
 import com.example.Login.entity.AwsAccounts;
-import com.example.Login.exceptionhandler.AccountDoesNotExists;
-import com.example.Login.exceptionhandler.AwsServiceException;
+import com.example.Login.entity.User;
+import com.example.Login.exceptionhandler.*;
 import com.example.Login.repository.AwsAccountsRepository;
+import com.example.Login.repository.UserRepository;
 import com.example.Login.service.serviceInterfaces.AwsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.core.exception.SdkClientException;
@@ -20,17 +22,33 @@ import software.amazon.awssdk.services.sts.model.StsException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class Ec2Service implements AwsService {
     private final StsAssumeRoleService stsAssumeRoleService;
     private final AwsClientFactory awsClientFactory;
-    private final AwsConfig awsConfig;
+    private final UserRepository userRepository;
     private final AwsAccountsRepository accountsRepository;
+//    private final JwtS
 
     public List<AwsEc2InstanceDetails> listInstances(Long accountId) {
         List<AwsEc2InstanceDetails> awsEc2InstanceDetailsList = new ArrayList<>();
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+       User user = userRepository.findByEmail(userDetails.getEmail())
+               .orElseThrow(()->new UserNotFoundException("User Does Not exists"));
+
+       if(user.getRole().getRole().name().equalsIgnoreCase("CUSTOMER")){
+           Set<AwsAccounts> accounts = user.getAwsAccountsList();
+           if(accounts.stream().filter(account-> Objects.equals(account.getAccountId(), accountId))
+                   .toList().isEmpty()){
+               throw new AccountNotAssociated(accountId + "not associated with current user");
+
+           }
+       }
+
         try {
             AwsAccounts account = accountsRepository.findByAccountId(accountId)
                     .orElseThrow(() -> new AccountDoesNotExists("No Account Exists"));
@@ -66,12 +84,11 @@ public class Ec2Service implements AwsService {
             String errorMessage = e.awsErrorDetails().errorMessage();
 
             if ("AccessDenied".equalsIgnoreCase(errorCode)) {
-                throw new AwsServiceException("Unauthorized to assume the role: " + errorMessage, e);
-            } else if ("MalformedPolicyDocument".equalsIgnoreCase(errorCode)
-                    || errorMessage.toLowerCase().contains("arn")) {
-                throw new AwsServiceException("Invalid ARN: " + errorMessage, e);
+                throw new AwsServiceException("Unauthorized to assume the selected arn ");
+            } else if (errorCode.contains("ValidationError")){
+                throw new AwsServiceException("Invalid ARN ");
             } else {
-                throw new AwsServiceException("STS Exception: " + errorMessage, e);
+                throw new AwsServiceException("Unable to connect ");
             }
 
         } catch (Ec2Exception e) {
@@ -79,18 +96,12 @@ public class Ec2Service implements AwsService {
             String errorMessage = e.awsErrorDetails().errorMessage();
 
             if ("UnauthorizedOperation".equalsIgnoreCase(errorCode)) {
-                throw new AwsServiceException("Unauthorized EC2 operation: " + errorMessage, e);
+                throw new AwsServiceException("Unable to access the resource");
             } else {
-                throw new AwsServiceException("EC2 Exception: " + errorMessage, e);
+                throw new AwsServiceException("Unexpected error in Ec2");
             }
-
-        } catch (SdkClientException | SdkServiceException e) {
-            throw new AwsServiceException("AWS SDK Client or Service exception: " + e.getMessage(), e);
-        }catch (SdkException e){
-            throw new AwsServiceException("Aws SDK Exception : "+ e.getMessage(),e);
-        }
-        catch (Exception e) {
-            throw new AwsServiceException("Unexpected error while listing EC2 instances.", e);
+        } catch (SdkException e){
+            throw new CustomSdkException("Unexpected Error " + e.getMessage());
         }
 
         return awsEc2InstanceDetailsList;

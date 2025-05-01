@@ -15,7 +15,6 @@ public class RoleService implements RoleInterface {
     @Autowired
     RoleRepository roleRepository;
     public List<ERole> getAllRoles(){
-        List<ERole> roles = roleRepository.findAllRoles();
-        return roles;
+        return roleRepository.findAllRoles();
     }
 }

@@ -19,17 +19,14 @@ public class UserController
     @Autowired
     UserService userService;
 
-
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id){
         return ResponseEntity.ok(userService.getUser(id));
     }
 
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("register")
     public ResponseEntity<UserDTO> addUser(@Valid @RequestBody UserDTO userDTO, @RequestHeader("Authorization") String token){
-        System.out.println("Hello");
         return ResponseEntity.ok(userService.addUser(userDTO,token));
     }
 

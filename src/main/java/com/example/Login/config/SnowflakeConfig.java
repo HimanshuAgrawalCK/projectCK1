@@ -25,13 +25,7 @@ public class SnowflakeConfig {
         HikariDataSource dataSource = new HikariDataSource();
 
         String connectionUrl = url;
-        if (warehouse != null && !warehouse.isEmpty()) {
-            if (connectionUrl.contains("?")) {
-                connectionUrl += "&warehouse=" + warehouse;
-            } else {
-                connectionUrl += "?warehouse=" + warehouse;
-            }
-        }
+
 
         log.info("Snowflake JDBC URL: {}", connectionUrl);
         log.info("Initializing Snowflake warehouse: {}", warehouse);

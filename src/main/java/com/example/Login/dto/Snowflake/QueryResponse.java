@@ -14,5 +14,6 @@ public class QueryResponse {
 
     private Long rowNum;
     private List<Map<String,Object>> result;
+    private List<Map<String,Object>> fullResult;
 
 }

@@ -1,9 +1,10 @@
 package com.example.Login.utils;
 
 import com.example.Login.dto.Snowflake.CostExplorerDto;
-import com.example.Login.dto.Snowflake.CostExplorerColumns;
+import com.example.Login.enums.CostExplorerColumns;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,7 +13,9 @@ import java.util.Map;
 @Slf4j
 @Component
 public class SqlQueryGenerator {
-    public static String queryGenerator(CostExplorerDto costExplorerDto) {
+
+    private static String limit;
+    public static String queryGenerator(CostExplorerDto costExplorerDto, String limit) {
         StringBuilder query = new StringBuilder("SELECT ");
 
         // Group by column
@@ -27,7 +30,8 @@ public class SqlQueryGenerator {
 
         query.append("SUM(LINEITEM_USAGEAMOUNT) AS TOTAL_AMOUNT ");
         query.append("FROM COST_EXPLORER ");
-        List<Map<String, Object>> filters = costExplorerDto.getFilters();
+        List<Map<String, Object>> filters = costExplorerDto.
+                getFilters();
         boolean hasFilters = filters != null && !filters.isEmpty();
         if (hasFilters) {
             query.append("WHERE ");
@@ -59,8 +63,8 @@ public class SqlQueryGenerator {
         query.append("AND LINKEDACCOUNTID = ").append(costExplorerDto.getAccountId()).append(" ");
 
         query.append(" GROUP BY ").append(groupByColumn.getDbColumnName()).append(", TO_CHAR(USAGESTARTDATE, 'MM-YYYY')");
-        query.append(" ORDER BY TOTAL_AMOUNT DESC");
-        query.append(" LIMIT 1000");
+//        query.append(" ORDER BY TOTAL_AMOUNT");
+        query.append(" LIMIT ").append(limit);
         log.info("SQL QUERY : " + query);
         return query.toString();
     }

@@ -41,19 +41,19 @@ public class UserService implements UserInterface {
     private DTOtoEntity dtOtoEntity;
 
     @Autowired
-    JWTService jwtService;
+    private JWTService jwtService;
 
     @Autowired
-    BlacklistedTokenRepository blacklistedTokenRepository;
+    private BlacklistedTokenRepository blacklistedTokenRepository;
 
     @Autowired
-    AwsAccountsRepository awsAccountsRepository;
+    private AwsAccountsRepository awsAccountsRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -95,7 +95,7 @@ public class UserService implements UserInterface {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new UserAlreadyExists();
         }
-        User user = dtOtoEntity.map(userDTO);
+        User user = DTOtoEntity.map(userDTO);
         Set<AwsAccounts> awsAccounts = userDTO.getAccounts().stream()
                 .map(id -> awsAccountsRepository.findByAccountId(id).get())
                 .collect(Collectors.toSet());
@@ -133,7 +133,7 @@ public class UserService implements UserInterface {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User Does Not Exists"));
 
-        UserDTO userResponse = dtOtoEntity.map(user);
+        UserDTO userResponse = DTOtoEntity.map(user);
         return userResponse;
 
     }
@@ -168,6 +168,6 @@ public class UserService implements UserInterface {
                 .orElseThrow(()-> new WrongRoleException("Role Does Not Exists"));
         user.setRole(role);
         userRepository.save(user);
-        return dtOtoEntity.map(user);
+        return DTOtoEntity.map(user);
     }
 }

@@ -1,8 +1,7 @@
 package com.example.Login.security;
 
 
-import com.example.Login.dto.LoginRequestDTO;
-import com.example.Login.exceptionhandler.CustomAccessDeniedHandler;
+
 import com.example.Login.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,6 @@ public class SecurityConfig {
 
     @Autowired
     private JwtFilter jwtFilter;
-
-    @Autowired
-    private CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {

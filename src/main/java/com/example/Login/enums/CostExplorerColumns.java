@@ -1,4 +1,4 @@
-package com.example.Login.dto.Snowflake;
+package com.example.Login.enums;
 
 import lombok.Getter;
 

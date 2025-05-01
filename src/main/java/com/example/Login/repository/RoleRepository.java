@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role,Long> {
 
     Optional<Role> findByRole(ERole role);
+
     @Query("SELECT DISTINCT r.role FROM Role r")
     List<ERole> findAllRoles();
 

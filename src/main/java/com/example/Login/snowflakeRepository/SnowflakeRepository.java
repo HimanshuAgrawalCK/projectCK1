@@ -1,15 +1,11 @@
-package com.example.Login.snowflake.repository;
+package com.example.Login.snowflakeRepository;
 
-import com.example.Login.dto.Snowflake.AccountCostCount;
-import com.example.Login.dto.Snowflake.ColumnDistinctValues;
 import com.example.Login.dto.Snowflake.QueryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +27,9 @@ public class SnowflakeRepository {
         QueryResponse queryResponse = new QueryResponse();
         queryResponse.setRowNum((long) resultList.size());
         queryResponse.setResult(resultList);
+        queryResponse.setFullResult(resultList);
         return queryResponse;
     }
-
-
 
     public List<String> getAllDistinctValues(String columnDBName) {
         String query = "SELECT DISTINCT(" + columnDBName + ") FROM COST_EXPLORER where " + columnDBName +" IS NOT NULL LIMIT 1000";

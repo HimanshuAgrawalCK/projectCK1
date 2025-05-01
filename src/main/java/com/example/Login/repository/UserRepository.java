@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User,Long>
 {
     Optional<User> findByEmail(String email);
     Boolean existsByEmail(String email);
-    List<User> findAll();
+
     @Query("SELECT u.id AS id, u.name AS name, u.email AS email,u.lastLoginTime as lastLoginTime, r.role AS roleName " +
             "FROM User u JOIN u.role r WHERE u.id <>:id")
     Page<UserSummary> findAllUserSummaries(Long id, Pageable pageable);

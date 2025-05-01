@@ -1,6 +1,7 @@
 package com.example.Login.controller;
 
 
+import com.example.Login.entity.ERole;
 import com.example.Login.entity.Role;
 import com.example.Login.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class RoleController
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getAllRoles(){
+    public ResponseEntity<List<ERole>> getAllRoles(){
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 

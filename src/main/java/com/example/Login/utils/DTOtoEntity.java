@@ -3,11 +3,7 @@ package com.example.Login.utils;
 import com.example.Login.dto.AwsDTO;
 import com.example.Login.dto.UserDTO;
 import com.example.Login.entity.AwsAccounts;
-import com.example.Login.entity.Role;
 import com.example.Login.entity.User;
-import com.example.Login.repository.AwsAccountsRepository;
-import com.example.Login.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -17,15 +13,7 @@ import java.util.stream.Collectors;
 
 public class DTOtoEntity {
 
-
-    private final AwsAccountsRepository awsAccountsRepository;
-
-    @Autowired
-    public DTOtoEntity(AwsAccountsRepository awsRepo) {
-        this.awsAccountsRepository = awsRepo; // inject once into static field
-    }
-
-    public User map(UserDTO userDTO) {
+    public static User map(UserDTO userDTO) {
         User user = new User();
         user.setPassword(userDTO.getPassword());
         user.setName(userDTO.getName());
@@ -33,7 +21,7 @@ public class DTOtoEntity {
         return user;
     }
 
-    public AwsAccounts map(AwsDTO awsDTO) {
+    public static AwsAccounts map(AwsDTO awsDTO) {
         AwsAccounts awsAccounts = new AwsAccounts();
         awsAccounts.setAccountName(awsDTO.getAccountName());
         awsAccounts.setArn(awsDTO.getArn());
@@ -41,7 +29,7 @@ public class DTOtoEntity {
         return awsAccounts;
     }
 
-    public UserDTO map(User user) {
+    public static UserDTO map(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
@@ -55,11 +43,6 @@ public class DTOtoEntity {
                         .collect(Collectors.toSet()) : null;
 
         userDTO.setAccounts(accounts);
-        // SET account in DTO
-//        userDTO.setAccounts(user.getAwsAccountsList()
-//                .stream()
-//                .map(accounts -> accounts.getAccountId())
-//                .collect(Collectors.toSet()));
         return userDTO;
     }
 

@@ -1,5 +1,6 @@
 package com.example.Login.controller;
 
+import com.example.Login.dto.JwtResponse;
 import com.example.Login.dto.LoginRequestDTO;
 import com.example.Login.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +25,6 @@ public class LoginController
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_READONLY')")
     @PostMapping("/logout")
     public void logout(@RequestHeader("Authorization") String token){
-        System.out.println(token);
         log.info("TOKEN : " + token);
         userService.logout(token);
 //        return ResponseEntity.status(HttpStatus.NO_CONTENT);
@@ -33,7 +33,7 @@ public class LoginController
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
         return ResponseEntity.ok(userService.login(loginRequestDTO));
     }
 

@@ -9,10 +9,10 @@ import lombok.Data;
 
 import java.util.List;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
 @Entity
 @Table(name="role")
 @Data

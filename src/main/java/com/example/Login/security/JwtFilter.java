@@ -7,11 +7,14 @@ import com.example.Login.security.jwt.JWTService;
 import com.example.Login.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +29,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.security.SignatureException;
+
 
 @Slf4j
 @Component
@@ -41,16 +44,19 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     BlacklistedTokenRepository blacklistedTokenRepository;
 
+    @Value("${jwt.key}")
+    private String key;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws InvalidTokenException, ExpiredJwtException, UserNotFoundException, MalformedJwtException, IOException, ServletException {
-        // bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIaW1hbnNodWFnYXJ3YWxAZ21haWwuY29tIiwiaWF0IjoxNzQzNzg1NDkxLCJleHAiOjE3NDM3ODU1NTF9.FG1Ez0FdNNCQjAtMDsTHz9-H-ZV9HYPcH02_rbsf3Z4
-
+            throws InvalidTokenException, ExpiredJwtException, UserNotFoundException,
+            MalformedJwtException, IOException, ServletException {
 
         try{
             String authHeader = request.getHeader("Authorization");
             String token = null;
             String email = null;
+
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
@@ -68,27 +74,29 @@ public class JwtFilter extends OncePerRequestFilter {
                 if (jwtService.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    log.info("In Do filter ", authToken);
+                    log.info("In Do filter "+ authToken);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
             filterChain.doFilter(request, response);
-        }catch (AuthorizationDeniedException e){
-            log.error("Permission Denied");
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"status\":403,\"error\":\"" + e.getMessage() + "\"}");
         }
         catch (ExpiredJwtException | MalformedJwtException | UsernameNotFoundException |
-                InvalidTokenException ex) {
+               InvalidTokenException | SignatureException ex) {
 
             log.error("JWT Error: {}", ex.getMessage());
+            log.error(ex.getClass().toString());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"status\":401,\"error\":\"" + ex.getMessage() + "\"}");
+            if(ex instanceof ExpiredJwtException){
+
+                response.getWriter().write("Session Expired, Please login again");
+            }
+            else{
+                response.getWriter().write(ex.getMessage());
+            }
         } catch (Exception e) {
-            log.error("Error occured", e.getClass());
+            log.error("Error occurred " + e.getMessage());
         }
     }
 }

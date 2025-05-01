@@ -5,7 +5,7 @@
     border-radius: 5px;
     background-color: white;
     padding: 20px;
-    width: 80%; 
+    width: calc(100% - 200px); 
     box-sizing: border-box; 
 
 }
@@ -42,7 +42,6 @@
 .fusionchart_container{
     display: flex;
     gap: 1%;
-    padding-left: 10px;
 }
 
 .fusionchart_wrapper{
@@ -135,6 +134,12 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .svg_icon{
+    fill: white;
+    padding: 8px;
+    border-radius: 5px;
+  }
   
   .table_wrapper {
     overflow-x: auto;
@@ -165,4 +170,13 @@
     background-color: #24B468;
     border-radius: 10px;
     border: none;
+}
+
+.month_year_dropdown{
+    padding: 5px;
+    color: #093ca2;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 5px;
+    background-color: white;
 }

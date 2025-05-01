@@ -4,6 +4,8 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import tableConfigs from "./tableConfig";
 import ContentCopy from "@mui/icons-material/ContentCopy";
 import "../../../styles/AwsResourceTable.css";
+import NoDataExists from "./NoDataExists";
+import { showToast } from "../../common/Toaster";
 
 const AwsResourceTable = () => {
   const { serviceType } = useParams(); // from route `/awsservicesdashboard/:serviceType`
@@ -26,27 +28,6 @@ const AwsResourceTable = () => {
   const [loading, setLoading] = useState(true);
 
   const config = tableConfigs[serviceType?.toUpperCase()];
-
-  const handleSearchChange = (key, value) => {
-    setSearchTerms((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const getUniqueValues = (key) => {
-    if (!data || data.length === 0) return [];
-
-    const values = data
-      .map((item) => item[key])
-      .filter((v) => v !== undefined && v !== null && v !== "");
-
-    const unique = [...new Set(values)];
-    console.log(`Unique values for ${key}:`, unique); // DEBUG LOG
-
-    return unique;
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,13 +60,15 @@ const AwsResourceTable = () => {
       {loading ? (
         <div className="loading-spinner">Loading...</div>
       ) : (
+        
         <div className="table-wrapper">
+          {data.length==0 ? <><NoDataExists/></> :
           <table className="aws-table">
             <thead>
               <tr>
                 {config.columns.map((col) => (
                   <th key={col.key}>
-                    <div className="column-header">
+                    <div className="column-header1">
                       {col.label}
                       <span
                         className="filter-icon"
@@ -112,7 +95,7 @@ const AwsResourceTable = () => {
                             <div
                               className={`filter-item ${
                                 !columnFilters[col.key] ? "selected" : ""
-                              }`}
+                                }`}
                               onClick={() => {
                                 setColumnFilters((prev) => ({
                                   ...prev,
@@ -124,18 +107,18 @@ const AwsResourceTable = () => {
                             </div>
                             {getFilteredValues(col.key).map((val) => (
                               <div
-                                key={val}
-                                className={`filter-item ${
-                                  columnFilters[col.key] === val
-                                    ? "selected"
-                                    : ""
+                              key={val}
+                              className={`filter-item ${
+                                columnFilters[col.key] === val
+                                ? "selected"
+                                : ""
                                 }`}
                                 onClick={() => {
                                   setColumnFilters((prev) => ({
                                     ...prev,
                                     [col.key]:
                                       prev[col.key] === val ? null : val, // toggle
-                                  }));
+                                    }));
                                   setOpenFilter(null); // close popup
                                 }}>
                                 {val}
@@ -171,9 +154,10 @@ const AwsResourceTable = () => {
                             <ContentCopy
                               fontSize="small"
                               className="copy-icon"
-                              onClick={() =>
+                              onClick={() =>{
+                                showToast("Copied to Clipboard",200);
                                 navigator.clipboard.writeText(row[col.key])
-                              }
+                              }}
                             />
                           </div>
                         ) : (
@@ -185,6 +169,7 @@ const AwsResourceTable = () => {
                 ))}
             </tbody>
           </table>
+              }
         </div>
       )}
     </div>

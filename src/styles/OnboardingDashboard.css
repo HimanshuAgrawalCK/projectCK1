@@ -1,9 +1,6 @@
 /* OnboardingDashboard.css */
 
 .dashboard_wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -17,7 +14,6 @@
 .main_container {
   display: flex;
   flex: 1;
-  /* margin-top: 3%; */
   background-color: #f5f7fa;
 }
 
@@ -25,7 +21,6 @@
   width: 200px;
   background-color: #1f2937;
   color: #ffffff;
-  /* padding: 20px; */
   overflow-y: auto;
 }
 
@@ -33,7 +28,7 @@
   flex: 1;
   padding: 30px;
   overflow-y: auto;
-  position: absolute;
+  background-color: white;
   left: 200px;
   display: flex;
   flex-direction: column;
@@ -131,19 +126,20 @@
   position: sticky;
   top: 1px;
   float: right;
+  max-height: 40px;
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 4px;
   color: #4b5563;
   transition: color 0.2s ease-in-out;
-  border-radius: 50%;
+  border-radius: 15px;
   z-index: 10;
 }
 
 .json-container:hover .copy-button {
-  color: #000;
-  background-color: darkgrey;
+  color: #fff;
+  background-color: #1655d3a1;
   transition: background-color 1000ms linear;
 }
 
@@ -158,6 +154,7 @@
   gap: 15px;
   background-color: #f9fafb !important;
   border: 1px solid #e0e0e0;
+  align-items: center;
   max-width: 400px;
   min-height: 40px;
   border-radius: 4px;

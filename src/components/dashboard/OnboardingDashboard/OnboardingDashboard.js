@@ -59,14 +59,19 @@ export default function OnboardingDashboard() {
 
   const handleSubmit = async () => {
     try {
-      const response = await addAccount(formData);
-      setDone(true);
-      showToast("Account added successfully", 200);
-      setFormData({
-        accountId: "",
-        accountName: "",
-        arn: "",
-      });
+      if (/^\d+$/.test(formData.accountId)) {
+        const response = await addAccount(formData);
+        setDone(true);
+        showToast("Account added successfully", 200);
+        setFormData({
+          accountId: "",
+          accountName: "",
+          arn: "",
+        });
+    } else {
+        showToast("Account Id contains character",400);
+    }
+    
     } catch (error) {
       showToast(error.response.data);
       handleRestart();

@@ -1,4 +1,3 @@
-import Login from "./components/Login";
 import "./styles/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastWrapper } from "./components/common/Toaster";
@@ -10,8 +9,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import Unauthorized from "./components/UnauthorizedAccess";
 import AwsResourceTable from "./components/dashboard/AwsServicesDashboard/AwsResourceTable";
 import Page404 from "./components/common/Page404";
+import LoginRoute from "./components/LoginRoute";
 
 function App() {
+
   return (
     <>
       <BrowserRouter>
@@ -41,7 +42,6 @@ function App() {
             }>
             <Route path=":serviceType" element={<AwsResourceTable />} />
           </Route>
-
           <Route
             path="/costexplorerdashboard"
             element={
@@ -50,10 +50,16 @@ function App() {
               </PrivateRoute>
             }
           />
-
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={<LoginRoute/>}
+          />
+          <Route
+            path="/"
+            element={<LoginRoute/>}
+          />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="*" element={<Page404/>} />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
       <ToastWrapper />

@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Login.css";
 import { loginUser } from "../api/Api";
 import { showToast } from "../components/common/Toaster";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/Action";
+
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+
+  // useEffect(()=>{
+  //   const data = JSON.parse(localStorage.getItem("userData"));
+  //   const role = localStorage.getItem("role");
+  //   if(data!==null || role!==null){
+  //       {role==="CUSTOMER" && navigate("/awsservicesdashboard")}
+  //       navigate("/usermanagementdashboard");
+  //   }
+  // })
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -36,5 +36,6 @@
 } */
 .nav-link.active {
   font-weight: bold;
-  color: #007bff;
+  color: #fff;
+  background-color: #093ca2;
 }

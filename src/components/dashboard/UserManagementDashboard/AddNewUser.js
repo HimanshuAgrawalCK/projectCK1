@@ -6,7 +6,6 @@ import { showToast } from "../../common/Toaster";
 import AccountDropdown from "../Accounts";
 
 export default function AddNewUser({ onBack }) {
-  const [isCustomer, setIsCustomers] = useState(true);
   const obj = {
     email: "",
     password: "",
@@ -16,8 +15,6 @@ export default function AddNewUser({ onBack }) {
   };
   const [formData, setFormData] = useState(obj);
   const [listing, setListing] = useState([]);
-
-  const [loading, setLoading] = useState(false);
 
   const [roles, setRoles] = useState([]);
 
@@ -41,10 +38,8 @@ export default function AddNewUser({ onBack }) {
     setFormData((prev) => ({ ...prev, [name]: value, accounts: listing }));
   };
 
-  const handleReset = (e) => {
-    setFormData(obj);
-  };
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const accountIdSet = new Set(
         Array.from(listing).map((acc) => acc.accountId)
@@ -66,8 +61,10 @@ export default function AddNewUser({ onBack }) {
       });
       showToast("User created successfully", 200);
     } catch (err) {
-      console.error("Error creating user", err.response);
+      debugger;
+      console.error("Error creating user");
       showToast(err?.response?.data, err?.response?.status);
+      debugger;
       alert("Error creating user");
     }
   };

@@ -86,3 +86,8 @@
     background-color: #ddd;
   }
   
+
+  .account-list input{
+    width: none;
+
+  }

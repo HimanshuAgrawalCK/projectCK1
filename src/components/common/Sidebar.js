@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "../../styles/Sidebar.css";
 import { useSelector } from "react-redux";
+import { fetchRoles } from "../../api/Api";
+import { showToast } from "./Toaster";
 
 export default function Sidebar() {
+
   const role = useSelector((state) => state.user.role);
   return (
     <div className="sidebar">

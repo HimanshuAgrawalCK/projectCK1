@@ -478,8 +478,8 @@ const constantsOfpage2 = [
       <button className="copy-button" onClick={() => handleCopy(jsonContent1)}>
         <svg
           xmlns="images/copy-text.svg"
-          width="15px"
-          height="15px"
+          width="24"
+          height="24"
           fill="currentColor"
           viewBox="0 0 24 24">
           <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />

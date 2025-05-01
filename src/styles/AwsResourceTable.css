@@ -29,6 +29,11 @@
     background-color: white;
     border-radius: 10px;
   }
+
+  .no_data_exists{
+    width: 100%;
+    text-align: center;
+  }
   
   .aws-table thead tr {
     background-color: #093ca2;
@@ -143,7 +148,7 @@
   }
   
 
-  .column-header {
+  .column-header1 {
     position: relative;
     justify-content: space-between;
     display: flex;

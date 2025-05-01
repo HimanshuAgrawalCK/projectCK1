@@ -27,10 +27,9 @@ const FusionChartComponent = ({
   endMonth,
   endYear,
   chartType = "mscolumn2d",
-  setBackendData
+  setBackendData,
 }) => {
   const [chartData, setChartData] = useState(null);
-
 
   const buildCostExplorerRequest = () => ({
     groupByName: String(groupByName),
@@ -47,20 +46,13 @@ const FusionChartComponent = ({
 
     try {
       const data = await getChartDataWithGroupAndFilters(requestBody);
-      {data.rowNum===0 && showToast("No Matching row",100);}
+      if (data.rowNum === 0) showToast("No Data Available", 100);
       setBackendData(data.result);
+
       const serviceColors = {};
       const monthSet = new Set();
       const serviceSet = new Set();
       const processedData = [];
-      
-      let usageMonthForOther = null;
-      for (const item of data.result) {
-        if (item[String(groupByName)] && item["USAGE_MONTH"]) {
-          usageMonthForOther = item["USAGE_MONTH"];
-          break;
-        }
-      }
 
       data.result.forEach((item) => {
         let serviceName = item[String(groupByName)];
@@ -82,12 +74,13 @@ const FusionChartComponent = ({
             serviceColors[serviceName] = getRandomColor();
           }
         } else if (item["label"] === "Other") {
-          if (usageMonthForOther) {
-            monthSet.add(usageMonthForOther);
+          const otherMonth = item["USAGE_MONTH"]; // FIXED LINE
+          if (otherMonth) {
+            monthSet.add(otherMonth);
             serviceSet.add("Other");
             processedData.push({
               service: "Other",
-              month: usageMonthForOther,
+              month: otherMonth,
               amount: item["value"],
             });
 
@@ -103,17 +96,27 @@ const FusionChartComponent = ({
 
       const categories = months.map((month) => ({ label: month }));
 
-      const datasets = services.map((service) => ({
-        seriesname: service,
-        color: serviceColors[service],
-        data: months.map((month) => {
+      const datasets = services
+      .map((service) => {
+        const values = months.map((month) => {
           const item = processedData.find(
             (d) => d.service === service && d.month === month
           );
-          return { value: item ? item.amount : 0 };
-        }),
-      }));
-
+          return item ? item.amount : 0;
+        });
+    
+        const total = values.reduce((sum, v) => sum + v, 0);
+    
+        if (total === 0) return null; // Skip services with 0 total value
+    
+        return {
+          seriesname: service,
+          color: serviceColors[service],
+          data: values.map((value) => ({ value })),
+        };
+      })
+      .filter(Boolean); // Remove null entries
+    
       setChartData({
         categories: [{ category: categories }],
         dataset: datasets,
@@ -155,8 +158,8 @@ const FusionChartComponent = ({
               showLegend: 1,
               legendPosition: "bottom",
             },
-            categories:chartData.categories,
-            dataset: chartData.dataset
+            categories: chartData.categories,
+            dataset: chartData.dataset,
           }}
         />
       )}

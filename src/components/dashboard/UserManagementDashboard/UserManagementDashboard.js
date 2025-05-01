@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "../../../styles/UserManagementDashboard.css";
+import "../../../styles/OnboardingDashboard.css";
+
 import Sidebar from "../../common/Sidebar";
 import Header from "../../common/Header";
 import { fetchUsers } from "../../../api/Api";
 import AddNewUser from "./AddNewUser";
 import EditUser from "./EditUser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -18,6 +20,9 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import { logout } from "../../../redux/Action";
+
+import { showToast } from "../../common/Toaster";
 
 export default function UserManagementDashboard() {
   const [loading, setLoading] = useState(true);
@@ -26,7 +31,7 @@ export default function UserManagementDashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [addUser, setAddUser] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
-
+ const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -36,13 +41,15 @@ export default function UserManagementDashboard() {
         setUsers(res?.content);
         setTotalPages(res?.totalPages);
       } catch (error) {
+        showToast(error?.response?.data,error?.status);
+        dispatch(logout());
         console.error("Error fetching users", error);
       } finally {
         setLoading(false);
       }
     };
     getUsers();
-  }, [page]);
+  }, [page,editUserId,addUser]);
 
   const handleEditButton = (userId) => {
     setEditUserId(userId);
@@ -139,12 +146,17 @@ export default function UserManagementDashboard() {
   }
 
   return (
-    <>
+    <div className="dashboard_wrapper">
+      <div className="header_wrapper">
       <Header />
-      <div className="userDashboard">
+      </div>
+
+      <div className="main_container">
+        <div className="sidebar_wrapper">
         <Sidebar />
+          </div>     
         <div className="userDashboard-content">{contentToRender}</div>
       </div>
-    </>
+    </div>
   );
 }

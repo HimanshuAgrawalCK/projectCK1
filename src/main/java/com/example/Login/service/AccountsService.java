@@ -46,7 +46,6 @@ public class AccountsService implements AccountsInterface {
         if (awsAccountsRepository.existsByArn(awsDTO.getArn())) {
             throw new AwsArnAlreadyExists("ARN has to be unique");
         }
-//        DTOtoEntity dtOtoEntity = new DTOtoEntity(awsAccountsRepository);
         AwsAccounts awsAccounts = DTOtoEntity.map(awsDTO);
         log.info("Aws Accounts : ", awsAccounts);
         awsAccountsRepository.save(awsAccounts);

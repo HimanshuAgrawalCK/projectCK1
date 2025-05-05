@@ -19,6 +19,7 @@ public class UserController
     @Autowired
     UserService userService;
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_READONLY')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id){
         return ResponseEntity.ok(userService.getUser(id));

@@ -20,7 +20,7 @@ public class RoleController
     @Autowired
     RoleService roleService;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_READONLY')")
     @GetMapping
     public ResponseEntity<List<ERole>> getAllRoles(){
         return ResponseEntity.ok(roleService.getAllRoles());

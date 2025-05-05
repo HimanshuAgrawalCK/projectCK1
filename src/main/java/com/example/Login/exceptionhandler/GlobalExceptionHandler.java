@@ -80,7 +80,7 @@ public class GlobalExceptionHandler
         if(ex.getMessage().equalsIgnoreCase("Data Access Exception")){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Runtime exception");
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Runtime exception");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Runtime exception");
     }
 
     @ExceptionHandler(AuthenticationException.class)
@@ -122,10 +122,10 @@ public class GlobalExceptionHandler
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(AwsServiceException.class)
-    public ResponseEntity<String> handleAwsServiceError(AwsServiceException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
+//    @ExceptionHandler(AwsServiceException.class)
+//    public ResponseEntity<String> handleAwsServiceError(AwsServiceException ex) {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {

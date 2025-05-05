@@ -40,8 +40,6 @@ public class SnowflakeServiceImpl implements SnowflakeService {
     @Autowired
     private JWTService jwt;
 
-//    @Value("${sql.limit}")
-//    private String limit;
     public QueryResponse getSumByGroupAndFilter(CostExplorerDto explorerDto, String token) {
         try {
 

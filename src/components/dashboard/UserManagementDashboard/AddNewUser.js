@@ -15,6 +15,7 @@ export default function AddNewUser({ onBack }) {
   };
   const [formData, setFormData] = useState(obj);
   const [listing, setListing] = useState([]);
+  const [disableSubmit, setDisableSubmit] = useState(true);
 
   const [roles, setRoles] = useState([]);
 
@@ -32,10 +33,25 @@ export default function AddNewUser({ onBack }) {
     getRoles();
   }, []);
 
+  const handleDisableSubmit = () =>{
+    if(obj.email == "" || obj.name==""){
+      setDisableSubmit(true);
+    }
+    else{
+      setDisableSubmit(false);
+    }
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [name]: value, accounts: listing }));
+
+    if(obj.email == "" || obj.name==""){
+      setDisableSubmit(true);
+    }
+    else{
+      setDisableSubmit(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -120,7 +136,7 @@ export default function AddNewUser({ onBack }) {
               ))}
             </select>
           </label>
-          <button type="submit">Create User</button>
+          <button type="submit" disabled={disableSubmit}>Create User</button>
           <button type="button" className="back-button" onClick={onBack}>
             {" "}
             Back

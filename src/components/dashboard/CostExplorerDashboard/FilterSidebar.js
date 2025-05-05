@@ -30,9 +30,14 @@ export default function FilterSidebar({ columnList , onFilterChange}) {
   const handleColumnClick = async (column) => {
     if (expandedColumn === column) {
       setExpandedColumn(null);
+      // Unchecking the column should remove its filters
+      setSelectedFilters((prev) => {
+        const updated = { ...prev };
+        delete updated[column];
+        return updated;
+      });
       return;
     }
-
     setExpandedColumn(column);
 
     if (!distinctValues[column]) {

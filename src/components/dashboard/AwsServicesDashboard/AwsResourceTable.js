@@ -28,6 +28,15 @@ const AwsResourceTable = () => {
   const [loading, setLoading] = useState(true);
 
   const config = tableConfigs[serviceType?.toUpperCase()];
+  useEffect(() => {
+    // Reset filters and search terms when serviceType changes
+    setSearchTerms({});
+    setFilters({});
+    setColumnFilters({});
+    setOpenFilter(null);
+    setData([]);
+  }, [serviceType]);
+  
 
   useEffect(() => {
     const fetchData = async () => {

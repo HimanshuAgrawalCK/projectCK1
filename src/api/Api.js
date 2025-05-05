@@ -33,12 +33,19 @@ authAxios.interceptors.response.use(
     ) {
       isTokenExpired = true;
       showToast("Session expired. Please log in again", 401);
+      localStorage.clear();
       setTimeout(() => {
         window.location.href = "/login";
       }, 1500);
     }
     if(error.response && error.response.status === 400){
       showToast(error.response.data, 400);
+    }
+    if(error.response && error.response.status === 403){
+      showToast(error.response.data, 403);
+      setTimeout(()=>{
+        window.location.href="/login"
+      },1500)
     }
     return Promise.reject(error);
   }

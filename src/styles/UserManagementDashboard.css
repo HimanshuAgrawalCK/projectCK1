@@ -44,12 +44,12 @@
 }
 
 .user-table th {
-  background-color: #dbe6f8;
+  color: #fff;
   padding: 10px 16px;
   text-align: left;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 14px;
-  color: #093CA2;
+  background-color: #093CA2;
   border-bottom: 1px solid #ddd;
 }
 
